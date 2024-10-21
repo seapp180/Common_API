@@ -1,0 +1,33 @@
+[22-08-2024 14:04:55] ERROR : ORA-12560: TNS:protocol adapter error
+  QUERY :  
+ -------------------------------------------------------------- 
+[22-08-2024 14:13:41] ERROR : data is not defined
+  QUERY : SELECT DISTINCT h.srh_Product AS F_POINT,1
+              FROM RPT.SMF_RECORD_HEADER_K1 H 
+              INNER JOIN RPT.SMF_RECORD_DETAIL_K1 D ON D.SRD_UNIT = H.SRH_UNIT 
+              AND D.SRD_GROUP = H.SRH_GROUP
+              AND D.SRD_HEADER_CODE = H.SRH_CODE
+              WHERE H.SRH_UNIT = 'QA'
+              AND H.SRH_GROUP = '0004'
+              ORDER BY 1 
+ -------------------------------------------------------------- 
+[22-08-2024 14:15:03] ERROR : dat is not defined
+  QUERY : SELECT DISTINCT h.srh_Product AS F_POINT,1
+              FROM RPT.SMF_RECORD_HEADER_K1 H 
+              INNER JOIN RPT.SMF_RECORD_DETAIL_K1 D ON D.SRD_UNIT = H.SRH_UNIT 
+              AND D.SRD_GROUP = H.SRH_GROUP
+              AND D.SRD_HEADER_CODE = H.SRH_CODE
+              WHERE H.SRH_UNIT = 'QA'
+              AND H.SRH_GROUP = '0004'
+              ORDER BY 1 
+ -------------------------------------------------------------- 
+[22-08-2024 14:20:28] ERROR : Cannot read properties of undefined (reading 'push')
+  QUERY : SELECT DISTINCT h.srh_Product AS F_POINT,1
+              FROM RPT.SMF_RECORD_HEADER_K1 H 
+              INNER JOIN RPT.SMF_RECORD_DETAIL_K1 D ON D.SRD_UNIT = H.SRH_UNIT 
+              AND D.SRD_GROUP = H.SRH_GROUP
+              AND D.SRD_HEADER_CODE = H.SRH_CODE
+              WHERE H.SRH_UNIT = 'QA'
+              AND H.SRH_GROUP = '0004'
+              ORDER BY 1 
+ -------------------------------------------------------------- 

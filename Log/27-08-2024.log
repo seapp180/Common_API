@@ -1,0 +1,19 @@
+[27-08-2024 18:17:34] ERROR : ORA-00942: table or view does not exist
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,H.POCH_SEND_DATE AS RECEIVE_DATE									
+          ,H.POCH_PO_DATE AS PO_DATE									
+          ,H.POCH_PO_CS_REQUEST_DATE AS APPLE_REQ_DATE									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E70526A'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 

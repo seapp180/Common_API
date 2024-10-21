@@ -1,0 +1,231 @@
+[30-08-2024 08:23:06] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:23:14] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:23:18] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:23:30] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:24:29] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:25:04] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:26:26] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:27:07] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:30:11] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:31:26] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:31:48] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 08:33:26] ERROR : Cannot read properties of null (reading 'toLocaleString')
+  QUERY : 
+          SELECT H.POCH_OEM_PO AS FETL_PO									
+          ,H.POCH_APPLE_PO AS APPLE_PO									
+          ,H.POCH_CHANGE_REV AS REV									
+          ,H.POCH_REF_CHANGE_NO AS REF_CHANGE_NO									
+          ,TO_CHAR(H.POCH_SEND_DATE,'DD/MM/YYYY') AS RECEIVE_DATE									
+          ,TO_CHAR(H.POCH_PO_DATE,'DD/MM/YYYY') AS PO_DATE									
+          ,TO_CHAR(H.POCH_PO_CS_REQUEST_DATE ,'DD/MM/YYYY') AS APPLE_REQ_DATE								
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA',D.POCD_CHANGE_QUANTITY,'DI',NULL,NULL) AS CHANGE_QTY									
+          ,D.POCD_APPLE_PART_NO AS APPLE_PART_NO									
+          ,D.POCD_APPLE_PART_DESC AS APPLE_PART_DESC									
+          ,DECODE(D.POCD_CHANGE_TYPE_CODE,'CA','CHANGE QTY','DI','CANCEL PO','') AS CHANGE_TYPE									
+          FROM PR.POZ_POCS_HEADER H INNER JOIN PR.POZ_POCS_DETAIL D ON H.POCH_CONTROL_ID=D.POCD_CONTROL_ID									
+          WHERE H.POCH_OEM_PO='2E705260'	
+          AND TO_CHAR(H.POCH_PO_CS_REQUEST_DATE,'DD/MM/YYYY') = '21/08/2024'	
+          ORDER BY H.POCH_CHANGE_REV	
+  
+ -------------------------------------------------------------- 
+[30-08-2024 10:31:39] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
