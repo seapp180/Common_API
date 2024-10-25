@@ -4,6 +4,8 @@ const RDESMasterUpload = require("../WorkService/Model_RDESMasterUpload.cjs");
 
 
 router.post("/Search", RDESMasterUpload.Search);
-
+router.post("/FileFormat", RDESMasterUpload.FileFormat);
+router.post("/InsUploadFile", RDESMasterUpload.InsUploadFile);
+router.post("/DeleteUploadFile", RDESMasterUpload.DeleteUploadFile);
 
 module.exports = router;

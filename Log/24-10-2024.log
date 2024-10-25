@@ -1,0 +1,93 @@
+[24-10-2024 10:54:01] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','','','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 10:55:02] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','','','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 10:55:10] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','','','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 10:56:04] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','','','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 10:56:22] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','TEST2','may1','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 11:00:03] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','TEST2','may1','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 11:02:31] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','TEST2','may1','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 11:03:30] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : 
+        INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE,CMM_KEY_1,CMM_KEY_2,CMM_KEY_3,CMM_VALUE_NUM_1,CMM_VALUE_NUM_2,CMM_VALUE_CHR_1)																																																	
+        VALUES('0034','TEST2','may1','','','','')  
+ -------------------------------------------------------------- 
+[24-10-2024 11:09:23] ERROR : ORA-01745: invalid host/bind variable name
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 11:27:41] ERROR : DPI-1050: Oracle Client library is at version 11.2 but version 12.1 or higher is needed
+  QUERY : 
+      INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE, CMM_KEY_1, CMM_KEY_2, CMM_KEY_3, CMM_VALUE_NUM_1, CMM_VALUE_NUM_2, CMM_VALUE_CHR_1)
+      VALUES('0034', 'TEST2',  'may1', 'xxxx1', '', '', '') 
+ -------------------------------------------------------------- 
+[24-10-2024 13:41:34] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:41:40] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:41:43] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:43:39] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:45:52] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:46:45] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 13:49:41] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:06:45] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:08:32] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_3")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:26:49] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_2")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:30:33] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_2")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:32:22] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_2")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:44:01] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_2")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:57:58] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[24-10-2024 14:58:46] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_1")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
