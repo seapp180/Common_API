@@ -6,8 +6,9 @@ const {
   } = require("../Conncetion/DBConn.cjs");
   const oracledb = require("oracledb");
   const { writeLogError } = require("../Common/LogFuction.cjs");
-  
+
   module.exports.GetProductTYPE0034 = async function (req, res) {
+
     var query = "";
     try {
       const Conn = await ConnectOracleDB("FPC");

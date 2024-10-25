@@ -1,0 +1,6 @@
+[25-10-2024 08:23:55] ERROR : ORA-01400: cannot insert NULL into ("FPC"."FPCC_CONTROL_MASTER_MAINTAIN"."CMM_KEY_2")
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[25-10-2024 10:45:34] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 

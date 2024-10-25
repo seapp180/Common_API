@@ -150,3 +150,34 @@ module.exports.DeleteUploadFile = async function (req, res) {
     res.status(500).json({message:error.message});
   } 
 }
+
+
+// module.exports.Updatae = async function (req, res) {
+//   let Conn;
+//   let query
+//   try {
+//     Conn = await ConnectOracleDB("PCTTTEST");
+//     // const { Product, Process, } = req.body;
+//     const query = `
+//       UPDATE FPCC_CONTROL_RECORD T																			
+//       SET T.FRC_VALUE_DATE_1 = TO_DATE('25/10/2024','DD/MM/YYYY')																			
+//           ,T.FRC_VALUE_CHR_14=TO_CHAR(SYSDATE,'DD/MM/YYYY HH24:MI:SS')
+//           ,T.FRC_VALUE_CHR_15='mayza55+'
+//       WHERE T.FRC_TYPE ='0005'																			
+//             AND UPPER(T.FRC_KEY_1) = UPPER('TEST6')																			
+//             AND T.FRC_KEY_2 = 'MP'																			
+//             AND T.FRC_KEY_3 = '2' `;
+          
+//     const params = {
+//       // Delproduct: Product,
+//       // Delprocess: Process,
+//     };
+
+//     const result = await Conn.execute(query, params,{ autoCommit: true });
+//     res.status(200).json(result.rows);
+//     DisconnectOracleDB(Conn);
+//   } catch (error) {
+//     writeLogError(error.message, query);
+//     res.status(500).json({message:error.message});
+//   } 
+// }
