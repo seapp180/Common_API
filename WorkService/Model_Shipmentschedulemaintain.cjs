@@ -189,15 +189,21 @@ module.exports.SaveData2 = async function (req, res) {
         console.log(secondshipment, loginid, strprdname, strbuild)
         query += `
                 UPDATE FPCC_CONTROL_RECORD T
-                SET T.FRC_VALUE_DATE_1 = TO_DATE('${secondshipment}','DD/MM/YYYY')	
+                SET T.FRC_VALUE_DATE_1 = TO_DATE(:Update_shipment ,'DD/MM/YYYY')	
                     ,T.FRC_VALUE_CHR_14 = TO_CHAR(SYSDATE, 'DD/MM/YYYY HH24:MI:SS')
-                    ,T.FRC_VALUE_CHR_15 = '${loginid}'	
+                    ,T.FRC_VALUE_CHR_15 = :Update_loginid
                 WHERE T.FRC_TYPE ='0005'	
-                      AND UPPER(T.FRC_KEY_1) = UPPER('${strprdname}')	
-                      AND T.FRC_KEY_2 = '${strbuild}'	
+                      AND UPPER(T.FRC_KEY_1) = UPPER(:Update_prdname)	
+                      AND T.FRC_KEY_2 = :Update_strbuild
                       AND T.FRC_KEY_3 = '2'	
                 `;
-        const result = await Conn.execute(query, { autoCommit: true });
+        const params = {
+         Update_shipment: secondshipment,
+         Update_loginid: loginid,
+         Update_prdname: strprdname,
+         Update_strbuild: strbuild,
+        };
+        const result = await Conn.execute(query,params, { autoCommit: true });
         res.status(200).json(result.rows);
         DisconnectOracleDB(Conn);
     } catch (error) {

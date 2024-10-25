@@ -4,3 +4,15 @@
 [25-10-2024 10:45:34] ERROR : ORA-12545: Connect failed because target host or object does not exist
   QUERY :  
  -------------------------------------------------------------- 
+[25-10-2024 13:46:15] ERROR : DPI-1050: Oracle Client library is at version 11.2 but version 12.1 or higher is needed
+  QUERY : 
+                UPDATE FPCC_CONTROL_RECORD T
+                SET T.FRC_VALUE_DATE_1 = TO_DATE('27/08/2024','DD/MM/YYYY')	
+                    ,T.FRC_VALUE_CHR_14 = TO_CHAR(SYSDATE, 'DD/MM/YYYY HH24:MI:SS')
+                    ,T.FRC_VALUE_CHR_15 = '002097'	
+                WHERE T.FRC_TYPE ='0005'	
+                      AND UPPER(T.FRC_KEY_1) = UPPER('RGPZ-384MW-0E')	
+                      AND T.FRC_KEY_2 = 'MP'	
+                      AND T.FRC_KEY_3 = '2'	
+                 
+ -------------------------------------------------------------- 
