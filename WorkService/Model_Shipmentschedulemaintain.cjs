@@ -34,7 +34,7 @@ module.exports.GetURL = async function (req, res) {
 module.exports.GetBuild = async function (req, res) {
     var query = "";
     try {
-        const Conn = await ConnectOracleDB("FPC");
+        const Conn = await ConnectOracleDB("PCTTTEST");
         const { strprdname } = req.body;
         query += `
                 SELECT DISTINCT DECODE(T.FRC_KEY_2,'*','SKIP BUILD',T.FRC_KEY_2) AS F_TEXT,T.FRC_KEY_2 AS F_VAL,1 AS F_SEQ	
@@ -197,7 +197,7 @@ module.exports.SaveData2 = async function (req, res) {
                       AND T.FRC_KEY_2 = '${strbuild}'	
                       AND T.FRC_KEY_3 = '2'	
                 `;
-        const result = await Conn.execute(query);
+        const result = await Conn.execute(query, { autoCommit: true });
         res.status(200).json(result.rows);
         DisconnectOracleDB(Conn);
     } catch (error) {
