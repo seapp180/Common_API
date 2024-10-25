@@ -24,10 +24,12 @@ app.use((req, res, next) => {
 const RDESMasterUpload = require("./routes/Routes_RDESMasterUpload.cjs");
 const Common = require("./routes/Routes_Common.cjs")
 const Shipmentschedulemaintain = require("./routes/Routes_Shipmentschedulemaintain.cjs");
+const QA_ORT_WorkingRecord = require("./routes/Routes_QA_ORT_WorkingRecord.cjs");
 // ----------------------------------------------------------
 app.use("/api/RDESMasterUpload", RDESMasterUpload);
 app.use("/api/Common", Common);
 app.use("/api/Shipment", Shipmentschedulemaintain);
+app.use("/api/QA_ORT_WorkingRecord", QA_ORT_WorkingRecord);
 // ----------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
