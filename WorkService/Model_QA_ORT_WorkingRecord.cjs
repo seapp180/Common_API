@@ -1,152 +1,125 @@
 const {
-    ConnectPG_DB,
-    DisconnectPG_DB,
-    ConnectOracleDB,
-    DisconnectOracleDB,
-  } = require("../Conncetion/DBConn.cjs");
-  const oracledb = require("oracledb");
-  const { writeLogError } = require("../Common/LogFuction.cjs");
-  
-//   module.exports.Search = async function (req, res) {
-//     var query = "";
-//     try {
-//       const Conn = await ConnectOracleDB("FPC");
-//       const {  Product} = req.body;
-//       console.log(Product)
-//       query += `
-//           SELECT T.CMM_KEY_1 AS F_PRODUCT,
-//           T.CMM_KEY_2 AS F_PROCESS,
-//           T.CMM_KEY_3 AS F_MACHINE														
-//           ,T.CMM_VALUE_NUM_1 AS F_CHAMBER,
-//           T.CMM_VALUE_NUM_2 AS F_MODE,
-//           T.CMM_VALUE_CHR_1 AS F_HOLDING														
-//           FROM FPCC_CONTROL_MASTER_MAINTAIN T														
-//           WHERE T.CMM_TYPE = '0034'														
-//              AND (T.CMM_KEY_1 = '${Product}' OR '${Product}'  = 'ALL')													
-//           ORDER BY T.CMM_KEY_1,T.CMM_KEY_2 `;
-//       const result = await Conn.execute(query);
-//       const jsonData = result.rows.map(row => ({
-//           PRODUCT : row[0],
-//           PROCESS : row[1],
-//           MACHINE : row[2],
-//           CHAMBER : row[3],
-//           MODE : row[4],
-//           HOLDING : row[5],
-//       }));
-//       res.status(200).json(jsonData);
-//       DisconnectOracleDB(Conn);
-//     } catch (error) {
-//       writeLogError(error.message, query);
-//       res.status(500).json({ message: error.message });
-//     }
-//   };
-  
-//   module.exports.FileFormat = async function (req, res) {
-//     var query = "";
-//     let Conn
-//     try {
-//       Conn = await ConnectOracleDB("FPC");
-//       query += `
-//             SELECT T.CMT_FILE_FORMAT													  
-//             FROM FPCC_CONTROL_MASTER_TYPE T													  
-//             WHERE T.CMT_CODE ='0034'		`;
-  
-//       const result = await Conn.execute(query);
-  
-//       if (result.rows.length > 0) {
-//         const blobData = result.rows[0][0]; 
-        
-     
-//         if (blobData) {
-      
-//           res.setHeader('Content-Type', 'application/octet-stream');
-//           res.setHeader('Content-Disposition', 'attachment; filename="yourfile.ext"');
-          
-        
-//           const buffer = await readBlobData(blobData);
-          
-//           res.send(buffer);
-          
-//         } else {
-//           res.status(404).json({ message: "No BLOB data found." });
-//         }
-//     }else {
-//       res.status(404).json({ message: "File not found." });
-//     }
-   
-//    } catch (error) {
-//       writeLogError(error.message, query);
-//       res.status(500).json({ message: error.message });
-//     }
-//     finally {
-//       DisconnectOracleDB(Conn); 
-//     }
-//   };
-  
-//   async function readBlobData(blobData) {
-//     return new Promise((resolve, reject) => {
-//       const chunks = [];
-//       blobData.on('data', chunk => chunks.push(chunk));
-//       blobData.on('end', () => resolve(Buffer.concat(chunks)));
-//       blobData.on('error', err => reject(err));
-//     });
-//   }
-  
-//   module.exports.InsUploadFile = async function (req, res) {
-//     let Conn;
-//     let query
-//     try {
-//       Conn = await ConnectOracleDB("FPC");
-//       const { Product, Process, Machine, Chamber, Mode, Holding } = req.body;
-//       console.log(Product, Process, Machine, Chamber, Mode, Holding, 'may');
-  
-  
-//       const query = `
-//         INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE, CMM_KEY_1, CMM_KEY_2, CMM_KEY_3, CMM_VALUE_NUM_1, CMM_VALUE_NUM_2, CMM_VALUE_CHR_1)
-//         VALUES('0034', :insproduct, :insprocess, :insmachine, :inschamber, :insmode, :insholding)`;
-      
-  
-//       const params = {
-//         insproduct: Product,
-//         insprocess: Process,
-//         insmachine: Machine,
-//         inschamber: Chamber,
-//         insmode: Mode,
-//         insholding: Holding
-//       };
-//       console.log(params,'pa')
-//       const result = await Conn.execute(query, params,{ autoCommit: true });
-//       res.status(200).json(result.rows);
-//       DisconnectOracleDB(Conn);
-//     } catch (error) {
-//       writeLogError(error.message, query);
-//       res.status(500).json({message:error.message});
-//       console.error(error.message)
-//     } 
-//   };
-  
-//   module.exports.DeleteUploadFile = async function (req, res) {
-//     let Conn;
-//     let query
-//     try {
-//       Conn = await ConnectOracleDB("FPC");
-//       const { Product, Process, } = req.body;
-//       const query = `
-//          DELETE FROM FPCC_CONTROL_MASTER_MAINTAIN T																																																	
-//          WHERE T.CMM_TYPE = '0034'																																																	
-//          AND T.CMM_KEY_1 = :Delproduct																																																	
-//          AND T.CMM_KEY_2 = :Delprocess`;
-      
-//       const params = {
-//         Delproduct: Product,
-//         Delprocess: Process,
-//       };
-  
-//       const result = await Conn.execute(query, params,{ autoCommit: true });
-//       res.status(200).json(result.rows);
-//       DisconnectOracleDB(Conn);
-//     } catch (error) {
-//       writeLogError(error.message, query);
-//       res.status(500).json({message:error.message});
-//     } 
-//   }
+  ConnectPG_DB,
+  DisconnectPG_DB,
+  ConnectOracleDB,
+  DisconnectOracleDB,
+} = require("../Conncetion/DBConn.cjs");
+const oracledb = require("oracledb");
+const { writeLogError } = require("../Common/LogFuction.cjs");
+
+module.exports.Search_QA_ORT_WorkingRecord = async function (req, res) {
+  var query = "";
+  try {
+    const Conn = await ConnectOracleDB("PCTTTEST");
+    // const { strprdname } = req.body;
+    const { PtrList } = req.body;
+    // const json_convertdata = JSON.stringify(dataList);
+    console.log("Search_QA_ORT_WorkingRecord", PtrList);
+    let query = `
+       SELECT
+            FACTORY,
+            PROCESS,
+            SERIAL_NO,
+            PRODUCT_NAME,
+            LOT_NO,f
+            QTY,
+            PRODUCT_TYPE,
+            JOB_TYPE,
+            ITEM_TEST,
+            MC_CODE,
+            TEST_CYCLE,
+            FIXTURE_JIG_CODE,
+            CAVITY_NO,
+            LAYER_POSITION,
+            COND_1,
+            COND_2,
+            RECEIVE_PIC,
+            TO_CHAR(TO_DATE(RECEIVE_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS RECEIVE_DATE,
+            TO_CHAR(TO_DATE(RECEIVE_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS RECEIVE_TIME,
+            INPUT1_PIC,
+            TO_CHAR(TO_DATE(INPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS INPUT1_DATE,
+            TO_CHAR(TO_DATE(INPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS INPUT1_TIME,
+            TO_CHAR(TO_DATE(OUTPUT_PLAN1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS OUTPUT_PLAN1_DATE,
+            TO_CHAR(TO_DATE(OUTPUT_PLAN1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS OUTPUT_PLAN1_TIME,
+            OUTPUT1_PIC,
+            TO_CHAR(TO_DATE(OUTPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS OUTPUT1_DATE,
+            TO_CHAR(TO_DATE(OUTPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS OUTPUT1_TIME,
+            INPUT2_PIC,
+            TO_CHAR(TO_DATE(INPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS INPUT2_DATE,
+            TO_CHAR(TO_DATE(INPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS INPUT2_TIME,
+            TO_CHAR(TO_DATE(OUTPUT_PLAN2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS OUTPUT_PLAN2_DATE,
+            TO_CHAR(TO_DATE(OUTPUT_PLAN2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS OUTPUT_PLAN2_TIME,
+            OUTPUT2_PIC,
+            TO_CHAR(TO_DATE(OUTPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'DD/MM/YYYY') AS OUTPUT2_DATE,
+            TO_CHAR(TO_DATE(OUTPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'HH24:MI') AS OUTPUT2_TIME,
+            INSPECTION_ITEM,
+            INSPECTION_PIC,
+            TEST_RESULT,
+            REMARK,
+            TO_DATE(RECEIVE_DATE, 'DD/MM/YYYY HH24:MI:SS') AS SEQ
+        FROM
+          COND.COND_QA_ORT_WORKING_RECORD
+        WHERE
+          FACTORY = '${ptrFactory}'
+          AND (PRODUCT_TYPE = '${ptrProductType}'
+            OR '${ptrProductType}' = 'ALL')
+    `;
+    if (ptrInput === "INPUT1") {
+      query += ` 
+      	AND (TO_CHAR(TO_DATE(INPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') <= '${selectedDateFromIn}'
+		      OR '${selectedDateFromIn}' IS NULL)
+	      AND (TO_CHAR(TO_DATE(OUTPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') >= '${selectedDateFromIn}'
+		      OR '${selectedDateFromIn}' IS NULL)
+      `;
+    } else if (ptrInput === "INPUT2") {
+      query += ` 
+      	AND (TO_CHAR(TO_DATE(INPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') >= '${selectedDateToIn}'
+		      OR '${selectedDateToIn}' IS NULL)
+	      AND (TO_CHAR(TO_DATE(INPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') <= '${selectedDateToIn}'
+		      OR '${selectedDateToIn}' IS NULL)
+      `;
+    }
+
+    if (ptrOutput === "OUTPUT1") {
+      query += ` 
+	      AND (TO_CHAR(TO_DATE(OUTPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') >= '${selectedDateFromOut}'
+		      OR '${selectedDateFromOut}' IS NULL)
+	      AND (TO_CHAR(TO_DATE(OUTPUT1_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') <= '${selectedDateFromOut}'
+		      OR '${selectedDateFromOut}' IS NULL)
+      `;
+    } else if (ptrOutput === "OUTPUT2") {
+      query += ` 
+	      AND (TO_CHAR(TO_DATE(OUTPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') >= '${selectedDateToOut}'
+		      OR '${selectedDateToOut}' IS NULL)
+	      AND (TO_CHAR(TO_DATE(OUTPUT2_DATE, 'DD/MM/YYYY HH24:MI:SS'), 'YYYYMMDD') <= '${selectedDateToOut}'
+		      OR '${selectedDateToOut}' IS NULL)
+      `;
+    }
+    query += ` 
+        AND (UPPER(PRODUCT_NAME) LIKE UPPER('${inputProductName}') || '%'
+          OR '${inputProductName}' IS NULL)
+        AND (UPPER(ITEM_TEST) LIKE UPPER('${inputTestItem}') || '%'
+          OR '${inputTestItem}' IS NULL)
+        AND (UPPER(SUBSTR(LOT_NO, 1, 9)) LIKE UPPER('${inputLotNo}')
+          OR '${inputLotNo}' IS NULL)
+        AND (REGEXP_SUBSTR(LOT_NO, '[^_]+', 1, 2) = '${inputWeekNo}'
+          OR '${inputWeekNo}' IS NULL)
+        AND (UPPER(SERIAL_NO) LIKE UPPER('${ptrSerialNo}') || '%'
+          OR '${ptrSerialNo}' IS NULL)
+    ORDER BY
+        TO_DATE(RECEIVE_DATE, 'DD/MM/YYYY HH24:MI:SS') DESC
+    `;
+
+    const result = await Conn.execute(query);
+    const jsonData = result.rows.map((row) => ({
+      build: row[1],
+      label: row[0],
+    }));
+
+    res.status(200).json(jsonData);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
