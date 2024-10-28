@@ -36,4 +36,28 @@ const {
     }
   };
 
+  module.exports.GetURL_Home = async function (req, res) {
+
+    var query = "";
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {  loginID,systemID} = req.body;
+      query += `
+                SELECT REPLACE(T.APP_URL,'P_LOGIN','${loginID}') AS F_URL															
+                FROM FPC.NAP_APPLICATION T															
+                WHERE T.APP_ID ='${systemID}'  `;
+      const result = await Conn.execute(query);
+      const jsonData = result.rows.map(row => ({
+        URL: row[0],
+      }));
+      res.status(200).json(jsonData);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+
+
    
