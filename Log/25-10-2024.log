@@ -4,3 +4,17 @@
 [25-10-2024 10:45:34] ERROR : ORA-12545: Connect failed because target host or object does not exist
   QUERY :  
  -------------------------------------------------------------- 
+[25-10-2024 14:52:58] ERROR : PARAMETER_UNIT is not defined
+  QUERY :  
+ -------------------------------------------------------------- 
+[25-10-2024 15:25:19] ERROR : ORA-01789: query block has incorrect number of result columns
+  QUERY : 
+               SELECT DISTINCT T.FABM_FAB_BATH_ID AS F_VAL, B.FAB_BATH_DESC AS F_TXT
+          FROM FPCQ_ANALYSIS_BAHT_MC T, FPCQ_ANALYSIS_BATH B
+          WHERE T.FABM_FAB_BATH_ID = B.FAB_BATH_ID
+          AND T.FABM_FAMM_MC_ID = '1'
+          AND B.FAB_STATUS = 'A'
+          UNION ALL
+          SELECT '','ALL',0,0 FROM DUAL
+		  ORDER BY 4,3,2 
+ -------------------------------------------------------------- 
