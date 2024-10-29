@@ -178,20 +178,138 @@ const {
         AND (P.FAPM_PROCESS_ID = '${PARAMETER_PROCESS}' OR '${PARAMETER_PROCESS}' IS NULL)
         AND (M.FAMM_MC_ID = '${PARAMETER_MC}' OR '${PARAMETER_MC}' IS NULL)
         AND (B.FAB_BATH_ID = '${PARAMETER_BATH}' OR '${PARAMETER_BATH}' IS NULL)
-        AND (T.FAM_CHEMICAL_ID = :chemical OR :chemical IS NULL)
+        AND (T.FAM_CHEMICAL_ID = '${PARAMETER_CHEMICAL}' OR '${PARAMETER_CHEMICAL}' IS NULL)
     ORDER BY U.FAUM_UNIT_DESC,P.FAPM_PROCESS_DESC,M.FAMM_MC_ID,B.FAB_BATH_DESC,T.FAM_SEQ
                   `;
       const result = await Conn.execute(query);
-    
-      
-     
-      res.status(200).json(result.rows);
+      const jsonData = result.rows.map(row => ({
+        FAUM_UNIT_DESC: row[0] ,
+        FAPM_PROCESS_DESC: row[1],
+        FAMM_MC_ID: row[2],
+        FAB_BATH_DESC: row[3],
+        FAM_CHEMICAL_ID: row[4],
+        FAM_CHEMICAL_DESC: row[5],
+        FAM_SEQ: row[6],
+        FAM_INPUT: row[7],
+        FAM_FORMULA: row[8],
+        FAM_FORMULA_REFER_ID: row[9],
+        FAM_FORMULA_REFER_ID2: row[10],
+        FAM_REPLENISHER: row[11],
+        FAM_REP_REFER_ID1: row[12],
+        FAM_REP_REFER_ID2: row[13],
+        FAM_UNIT: row[14],
+        FAM_TARGET: row[15],
+        FAM_LCL: row[16],
+        FAM_UCL: row[17],
+        FAM_LSL: row[18],
+        FAM_USL: row[19],
+
+      }));
+      res.status(200).json(jsonData);
       DisconnectOracleDB(Conn);
     } catch (error) {
       writeLogError(error.message, query);
       res.status(500).json({ message: error.message });
     }
   };
-  
+  module.exports.GetUnitPopup = async function (req, res) {
+    var query = "";
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      query += `
+    SELECT T.FAUM_UNIT_ID AS F_VAL, T.FAUM_UNIT_DESC AS F_TXT
+    FROM FPCQ_ANALYSIS_UNIT_M T
+    WHERE T.FAUM_STATUS = 'A'
+    ORDER BY 2
+
+              `;
+      const result = await Conn.execute(query);
+      const jsonData = result.rows.map(row => ({
+        UNIT_F_VAL: row[0] ,
+        UNIT_F_TXT: row[1],
+      }));
+      
+     
+      res.status(200).json(jsonData);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+  module.exports.GetProcessPopup = async function (req, res) {
+    var query = "";
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {PARAMETER_UNIT} = req.body
+      query += `
+        SELECT T.FAPM_PROCESS_ID AS F_VAL, T.FAPM_PROCESS_DESC AS F_TXT
+        FROM FPCQ_ANALYSIS_PROCESS_M T
+        WHERE T.FAPM_UNIT = '${PARAMETER_UNIT}'
+        ORDER BY 2
+              `;
+      const result = await Conn.execute(query);
+      const jsonData = result.rows.map(row => ({
+        PROCESS_F_VAL: row[0] ,
+        PROCESS_F_TXT: row[1],
+      }));
+      
+     
+      res.status(200).json(jsonData);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+  module.exports.GetMachinePopup = async function (req, res) {
+    var query = "";
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {PARAMETER_PROCESS} = req.body
+      query += `
+        SELECT DISTINCT T.FAMM_MC_ID AS F_VAL, T.FAMM_MC_DESC AS F_TXT
+        FROM FPCQ_ANALYSIS_MC_M T
+        WHERE T.FAMM_STATUS = 'A'
+              AND T.FAMM_PROC = '${PARAMETER_PROCESS}'
+        ORDER BY 2
+              `;
+      const result = await Conn.execute(query);
+      const jsonData = result.rows.map(row => ({
+        MACHINE_F_VAL: row[0] ,
+        MACHINE_F_TXT: row[1],
+      }));
+      
+     
+      res.status(200).json(jsonData);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+  module.exports.GetFileFormat = async function (req, res) {
+    var query = "";
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      query += `
+       SELECT T.CMT_FILE_FORMAT
+        FROM FPCC_CONTROL_MASTER_TYPE T
+        WHERE T.CMT_CODE ='0038'
+
+              `;
+      const result = await Conn.execute(query);
+      const jsonData = result.rows.map(row => ({
+        CMT_FILE_FORMAT: row[0] 
+      }));
+      
+     
+      res.status(200).json(jsonData);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
   
    

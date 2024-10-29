@@ -8,6 +8,14 @@ router.post("/GetMachine",Analysis.GetMachine);
 router.post("/GetBath",Analysis.GetBath);
 router.post("/GetChemical",Analysis.GetChemical);
 router.post("/Search_Analysis",Analysis.Search_Analysis);
+router.get("/GetUnitPopup",Analysis.GetUnitPopup);
+router.post("/GetProcessPopup",Analysis.GetProcessPopup);
+router.post("/GetMachinePopup",Analysis.GetMachinePopup);
+router.get("/GetFileFormat",Analysis.GetFileFormat);
+
+
+
+
 
 
 
