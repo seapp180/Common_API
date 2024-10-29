@@ -29,7 +29,7 @@ const QA_ORT_WorkingRecord = require("./routes/Routes_QA_ORT_WorkingRecord.cjs")
 app.use("/api/RDESMasterUpload", RDESMasterUpload);
 app.use("/api/Common", Common);
 app.use("/api/Shipment", Shipmentschedulemaintain);
-app.use("/api/QA_ORT_WorkingRecord", QA_ORT_WorkingRecord);
+app.use("/api/QAORTWorkingRecord", QA_ORT_WorkingRecord);
 // ----------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
