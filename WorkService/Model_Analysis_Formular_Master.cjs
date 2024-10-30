@@ -148,6 +148,7 @@ const {
     try {
       const Conn = await ConnectOracleDB("FPC");
       const {PARAMETER_UNIT,PARAMETER_PROCESS,PARAMETER_MC,PARAMETER_BATH,PARAMETER_CHEMICAL} = req.body
+      console.log('Search',PARAMETER_UNIT,PARAMETER_PROCESS,PARAMETER_MC,PARAMETER_BATH,PARAMETER_CHEMICAL)
       query += `
       SELECT
         U.FAUM_UNIT_DESC,
@@ -181,6 +182,7 @@ const {
         AND (T.FAM_CHEMICAL_ID = '${PARAMETER_CHEMICAL}' OR '${PARAMETER_CHEMICAL}' IS NULL)
     ORDER BY U.FAUM_UNIT_DESC,P.FAPM_PROCESS_DESC,M.FAMM_MC_ID,B.FAB_BATH_DESC,T.FAM_SEQ
                   `;
+                  // console.log(query)
       const result = await Conn.execute(query);
       const jsonData = result.rows.map(row => ({
         FAUM_UNIT_DESC: row[0] ,
@@ -188,7 +190,7 @@ const {
         FAMM_MC_ID: row[2],
         FAB_BATH_DESC: row[3],
         FAM_CHEMICAL_ID: row[4],
-        FAM_CHEMICAL_DESC: row[5],
+        FAM_CHEMICAL_DESC: row[5], //pp
         FAM_SEQ: row[6],
         FAM_INPUT: row[7],
         FAM_FORMULA: row[8],
@@ -288,28 +290,81 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
-  module.exports.GetFileFormat = async function (req, res) {
-    var query = "";
-    try {
-      const Conn = await ConnectOracleDB("FPC");
-      query += `
-       SELECT T.CMT_FILE_FORMAT
-        FROM FPCC_CONTROL_MASTER_TYPE T
-        WHERE T.CMT_CODE ='0038'
+  // module.exports.GetFileFormat = async function (req, res) {
+  //   var query = "";
+  //   try {
+  //     const Conn = await ConnectOracleDB("FPC");
+  //     query += `
+  //      SELECT T.CMT_FILE_FORMAT
+  //       FROM FPCC_CONTROL_MASTER_TYPE T
+  //       WHERE T.CMT_CODE ='0038'
 
-              `;
-      const result = await Conn.execute(query);
-      const jsonData = result.rows.map(row => ({
-        CMT_FILE_FORMAT: row[0] 
-      }));
+  //             `;
+  //     const result = await Conn.execute(query);
+  //     const jsonData = result.rows.map(row => ({
+  //       CMT_FILE_FORMAT: row[0] 
+  //     }));
       
      
-      res.status(200).json(jsonData);
-      DisconnectOracleDB(Conn);
-    } catch (error) {
+  //     res.status(200).json(jsonData);
+  //     DisconnectOracleDB(Conn);
+  //   } catch (error) {
+  //     writeLogError(error.message, query);
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // };
+
+
+  module.exports.GetFileFormat = async function (req, res) {
+    var query = "";
+    let Conn
+    try {
+      Conn = await ConnectOracleDB("FPC");
+      query += `
+         SELECT T.CMT_FILE_FORMAT
+        FROM FPCC_CONTROL_MASTER_TYPE T
+        WHERE T.CMT_CODE ='0038'	`;
+
+      const result = await Conn.execute(query);
+      console.log(result.rows)
+      if (result.rows.length > 0) {
+        const blobData = result.rows[0][0]; 
+        
+     
+        if (blobData) {
+      
+          res.setHeader('Content-Type', 'application/octet-stream');
+          res.setHeader('Content-Disposition', 'attachment; filename="yourfile.ext"');
+          
+        
+          const buffer = await readBlobData(blobData);
+          
+          res.send(buffer);
+          
+        } else {
+          res.status(404).json({ message: "No BLOB data found." });
+        }
+    }else {
+      res.status(404).json({ message: "File not found." });
+    }
+   
+   } catch (error) {
       writeLogError(error.message, query);
       res.status(500).json({ message: error.message });
+      console.error(error.message)
+    }
+    finally {
+      DisconnectOracleDB(Conn); 
     }
   };
+  
+  async function readBlobData(blobData) {
+    return new Promise((resolve, reject) => {
+      const chunks = [];
+      blobData.on('data', chunk => chunks.push(chunk));
+      blobData.on('end', () => resolve(Buffer.concat(chunks)));
+      blobData.on('error', err => reject(err));
+    });
+  }
   
    
