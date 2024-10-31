@@ -227,8 +227,8 @@ const {
               `;
       const result = await Conn.execute(query);
       const jsonData = result.rows.map(row => ({
-        UNIT_F_VAL: row[0] ,
-        UNIT_F_TXT: row[1],
+        value: row[0] ,
+        label: row[1],
       }));
       
      
@@ -252,8 +252,8 @@ const {
               `;
       const result = await Conn.execute(query);
       const jsonData = result.rows.map(row => ({
-        PROCESS_F_VAL: row[0] ,
-        PROCESS_F_TXT: row[1],
+        value: row[0] ,
+        label: row[1],
       }));
       
      
@@ -278,8 +278,8 @@ const {
               `;
       const result = await Conn.execute(query);
       const jsonData = result.rows.map(row => ({
-        MACHINE_F_VAL: row[0] ,
-        MACHINE_F_TXT: row[1],
+        value: row[0] ,
+        label: row[1],
       }));
       
      
@@ -290,29 +290,6 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
-  // module.exports.GetFileFormat = async function (req, res) {
-  //   var query = "";
-  //   try {
-  //     const Conn = await ConnectOracleDB("FPC");
-  //     query += `
-  //      SELECT T.CMT_FILE_FORMAT
-  //       FROM FPCC_CONTROL_MASTER_TYPE T
-  //       WHERE T.CMT_CODE ='0038'
-
-  //             `;
-  //     const result = await Conn.execute(query);
-  //     const jsonData = result.rows.map(row => ({
-  //       CMT_FILE_FORMAT: row[0] 
-  //     }));
-      
-     
-  //     res.status(200).json(jsonData);
-  //     DisconnectOracleDB(Conn);
-  //   } catch (error) {
-  //     writeLogError(error.message, query);
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // };
 
 
   module.exports.GetFileFormat = async function (req, res) {
