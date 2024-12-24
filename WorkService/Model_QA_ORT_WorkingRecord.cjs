@@ -74,8 +74,8 @@ module.exports.SearchQAORTWorkingRecord = async function (req, res) {
       FROM COND.COND_QA_ORT_WORKING_RECORD
       WHERE FACTORY = '${ptrFactory}'
       AND (PRODUCT_TYPE = '${ptrProductType}' OR '${ptrProductType}' = 'ALL')
-      AND (UPPER(PRODUCT_NAME) LIKE UPPER('${ptrProductName}') || '%' OR '${ptrProductName}' IS NULL)
-      AND (UPPER(ITEM_TEST) LIKE UPPER('${ptrTestItem}') || '%' OR '${ptrTestItem}' IS NULL)
+      AND (UPPER(PRODUCT_NAME) LIKE UPPER('${ptrProductName}') || '%' OR '${ptrProductName}' IS NULL OR '${ptrProductName}' = 'ALL')
+      AND (UPPER(ITEM_TEST) LIKE UPPER('${ptrTestItem}') || '%' OR '${ptrTestItem}' IS NULL OR '${ptrTestItem}' = 'ALL')
       AND (UPPER(SUBSTR(LOT_NO,1,9)) LIKE UPPER('${ptrLotNo}') OR '${ptrLotNo}' IS NULL)
       AND (REGEXP_SUBSTR(LOT_NO, '[^_]+', 1, 2) = '${ptrWeekNo}' OR '${ptrWeekNo}' IS NULL)
       AND (UPPER(SERIAL_NO) LIKE UPPER('${ptrSerialNo}') || '%' OR '${ptrSerialNo}' IS NULL)
@@ -166,6 +166,7 @@ module.exports.ProductNameQAORTWorkingRecord = async function (req, res) {
       });
       return rowObject;
     });
+    jsonResult.unshift({ PRODUCT_NAME: 'ALL' });
     res.status(200).json(jsonResult);
     DisconnectOracleDB(Conn);
   } catch (error) {
@@ -191,6 +192,7 @@ module.exports.ItemTestQAORTWorkingRecord = async function (req, res) {
       });
       return rowObject;
     });
+    jsonResult.unshift({ ITEM_TEST: 'ALL' });
     res.status(200).json(jsonResult);
     DisconnectOracleDB(Conn);
   } catch (error) {
