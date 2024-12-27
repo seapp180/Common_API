@@ -12,7 +12,7 @@ router.post("/GetUnitPopup",Analysis.GetUnitPopup);
 router.post("/GetProcessPopup",Analysis.GetProcessPopup);
 router.post("/GetMachinePopup",Analysis.GetMachinePopup);
 router.post("/GetFileFormat",Analysis.GetFileFormat);
-
+router.post("/GetBathValue",Analysis.GetBathValue);
 
 
 

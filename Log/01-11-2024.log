@@ -1,0 +1,46 @@
+[01-11-2024 08:56:59] ERROR : Cannot read properties of undefined (reading '0')
+  QUERY : 
+          SELECT DISTINCT T.FABM_FAB_BATH_ID AS F_VAL, B.FAB_BATH_DESC AS F_TXT
+          FROM FPCQ_ANALYSIS_BAHT_MC T, FPCQ_ANALYSIS_BATH B
+          WHERE T.FABM_FAB_BATH_ID = B.FAB_BATH_ID
+          AND B.FAB_BATH_DESC = 'Strippind 2'
+          AND B.FAB_STATUS = 'A' 
+ -------------------------------------------------------------- 
+[01-11-2024 08:58:02] ERROR : Cannot read properties of undefined (reading '0')
+  QUERY : 
+          SELECT DISTINCT T.FABM_FAB_BATH_ID AS F_VAL, B.FAB_BATH_DESC AS F_TXT
+          FROM FPCQ_ANALYSIS_BAHT_MC T, FPCQ_ANALYSIS_BATH B
+          WHERE T.FABM_FAB_BATH_ID = B.FAB_BATH_ID
+          AND B.FAB_BATH_DESC = 'Strippind 2'
+          AND B.FAB_STATUS = 'A' 
+ -------------------------------------------------------------- 
+[01-11-2024 11:04:40] ERROR : ORA-12543: TNS:destination host unreachable
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:04:40] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:00] ERROR : ORA-12543: TNS:destination host unreachable
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:00] ERROR : ORA-12543: TNS:destination host unreachable
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:54] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:54] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:56] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 11:07:56] ERROR : ORA-12543: TNS:destination host unreachable
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 13:17:33] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
+[01-11-2024 13:17:33] ERROR : ORA-12545: Connect failed because target host or object does not exist
+  QUERY :  
+ -------------------------------------------------------------- 
