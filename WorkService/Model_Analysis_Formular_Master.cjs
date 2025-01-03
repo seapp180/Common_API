@@ -38,7 +38,7 @@ const {
       const Conn = await ConnectOracleDB("FPC");
       const {PARAMETER_UNIT} = req.body
       query += `
-              SELECT T.FAPM_PROCESS_ID AS F_VAL, T.FAPM_PROCESS_DESC AS F_TXT,1 AS SEQ
+                SELECT T.FAPM_PROCESS_ID AS F_VAL, T.FAPM_PROCESS_DESC AS F_TXT,1 AS SEQ
                 FROM FPCQ_ANALYSIS_PROCESS_M T
                 WHERE T.FAPM_UNIT = '${PARAMETER_UNIT}' AND T.FAPM_STATUS = 'A'
                 UNION ALL
@@ -151,36 +151,41 @@ const {
       console.log('Search',PARAMETER_UNIT,PARAMETER_PROCESS,PARAMETER_MC,PARAMETER_BATH,PARAMETER_CHEMICAL)
       query += `
       SELECT
-        U.FAUM_UNIT_DESC,
-        P.FAPM_PROCESS_DESC,
-        M.FAMM_MC_ID,
-        B.FAB_BATH_DESC,
-        T.FAM_CHEMICAL_ID,
-        T.FAM_CHEMICAL_DESC,
-        T.FAM_SEQ,
-        T.FAM_INPUT,
-        T.FAM_FORMULA,
-        T.FAM_FORMULA_REFER_ID,
-        T.FAM_FORMULA_REFER_ID2,
-        T.FAM_REPLENISHER,
-        T.FAM_REP_REFER_ID1,
-        T.FAM_REP_REFER_ID2,
-        T.FAM_UNIT,
-        T.FAM_TARGET,
-        T.FAM_LCL,
-        T.FAM_UCL,
-        T.FAM_LSL,
-        T.FAM_USL
-    FROM FPCQ_ANALYSIS_MASTER T INNER JOIN FPCQ_ANALYSIS_MC_M M ON T.FAM_MC_CODE = M.FAMM_MC_ID
-                  INNER JOIN FPCQ_ANALYSIS_PROCESS_M P ON P.FAPM_PROCESS_ID = M.FAMM_PROC
-                  INNER JOIN FPCQ_ANALYSIS_UNIT_M U ON U.FAUM_UNIT_ID = P.FAPM_UNIT
-                  INNER JOIN FPCQ_ANALYSIS_BATH B ON B.FAB_BATH_ID = T.FAM_BATH_ID
-    WHERE (U.FAUM_UNIT_ID = '${PARAMETER_UNIT}' OR '${PARAMETER_UNIT}' IS NULL)
+        U.FAUM_UNIT_DESC, --0
+        P.FAPM_PROCESS_DESC, --1
+        M.FAMM_MC_ID, --2
+        B.FAB_BATH_DESC, --3 
+        T.FAM_CHEMICAL_ID,  --4
+        T.FAM_CHEMICAL_DESC,  --5
+        T.FAM_SEQ,  --6
+        T.FAM_INPUT,  --7
+        T.FAM_FORMULA,  --8
+        CR1.FAM_CHEMICAL_DESC AS FORMULA_REFER1,  --9
+        CR2.FAM_CHEMICAL_DESC AS FORMULA_REFER2,  --10
+        T.FAM_REPLENISHER,  --11
+        REP1.FAM_CHEMICAL_DESC AS REFER_REFER1, --12 
+        REP2.FAM_CHEMICAL_DESC AS REFER_REFER2, --13
+        T.FAM_UNIT, --14
+        T.FAM_TARGET, --15
+        T.FAM_LCL,  --16
+        T.FAM_UCL,  --17
+        T.FAM_LSL,  --18
+        T.FAM_USL --19
+      FROM FPCQ_ANALYSIS_MASTER T INNER JOIN FPCQ_ANALYSIS_MC_M M ON T.FAM_MC_CODE = M.FAMM_MC_ID  
+               INNER JOIN FPCQ_ANALYSIS_PROCESS_M P ON P.FAPM_PROCESS_ID = M.FAMM_PROC  
+               INNER JOIN FPCQ_ANALYSIS_UNIT_M U ON U.FAUM_UNIT_ID = P.FAPM_UNIT  
+               INNER JOIN FPCQ_ANALYSIS_BATH B ON B.FAB_BATH_ID = T.FAM_BATH_ID 
+               LEFT JOIN FPCQ_ANALYSIS_MASTER CR1 ON CR1.FAM_CHEMICAL_ID = T.FAM_FORMULA_REFER_ID AND CR1.FAM_BATH_ID = T.FAM_BATH_ID 
+               LEFT JOIN FPCQ_ANALYSIS_MASTER CR2 ON CR2.FAM_CHEMICAL_ID = T.FAM_FORMULA_REFER_ID2 AND CR2.FAM_BATH_ID = T.FAM_BATH_ID                               
+               LEFT JOIN FPCQ_ANALYSIS_MASTER REP1 ON REP1.FAM_CHEMICAL_ID = T.FAM_REP_REFER_ID1 AND REP1.FAM_BATH_ID = T.FAM_BATH_ID 
+               LEFT JOIN FPCQ_ANALYSIS_MASTER REP2 ON REP2.FAM_CHEMICAL_ID = T.FAM_REP_REFER_ID2 AND REP2.FAM_BATH_ID = T.FAM_BATH_ID
+      WHERE 1=1
+        AND (U.FAUM_UNIT_ID = '${PARAMETER_UNIT}' OR '${PARAMETER_UNIT}' IS NULL)
         AND (P.FAPM_PROCESS_ID = '${PARAMETER_PROCESS}' OR '${PARAMETER_PROCESS}' IS NULL)
         AND (M.FAMM_MC_ID = '${PARAMETER_MC}' OR '${PARAMETER_MC}' IS NULL)
         AND (B.FAB_BATH_ID = '${PARAMETER_BATH}' OR '${PARAMETER_BATH}' IS NULL)
         AND (T.FAM_CHEMICAL_ID = '${PARAMETER_CHEMICAL}' OR '${PARAMETER_CHEMICAL}' IS NULL)
-    ORDER BY U.FAUM_UNIT_DESC,P.FAPM_PROCESS_DESC,M.FAMM_MC_ID,B.FAB_BATH_DESC,T.FAM_SEQ
+       ORDER BY U.FAUM_UNIT_DESC,P.FAPM_PROCESS_DESC,M.FAMM_MC_ID,B.FAB_BATH_DESC,T.FAM_SEQ
                   `;
                   // console.log(query)
       const result = await Conn.execute(query);
@@ -345,3 +350,26 @@ const {
   }
   
    
+  module.exports.GetBathValue = async function (req, res) {
+    var query = "";
+    let data=''
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {Bath} = req.body
+      query += `
+          SELECT DISTINCT T.FABM_FAB_BATH_ID AS F_VAL, B.FAB_BATH_DESC AS F_TXT
+          FROM FPCQ_ANALYSIS_BAHT_MC T, FPCQ_ANALYSIS_BATH B
+          WHERE T.FABM_FAB_BATH_ID = B.FAB_BATH_ID
+          AND B.FAB_BATH_DESC = '${Bath}'
+          AND B.FAB_STATUS = 'A'`;
+      const result = await Conn.execute(query);
+      if(result.rows.length>0){
+        data=result.rows[0][0]
+      }
+      res.status(200).json(data);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
