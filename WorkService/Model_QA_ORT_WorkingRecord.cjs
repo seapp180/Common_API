@@ -88,12 +88,11 @@ module.exports.SearchQAORTWorkingRecord = async function (req, res) {
       AND (TO_CHAR(TO_DATE(OUTPUT2_DATE,'DD/MM/YYYY'),'YYYYMMDD') >= '${ptrDateFromOut2}' OR '${ptrDateFromOut2}' IS NULL)
       AND (TO_CHAR(TO_DATE(OUTPUT2_DATE,'DD/MM/YYYY'),'YYYYMMDD') <= '${ptrDateToOut2}' OR '${ptrDateToOut2}' IS NULL)
       ORDER BY
-      FACTORY,
-      PROCESS,
-      PRODUCT_NAME,
-      LOT_NO,
-      SERIAL_NO,
-      TO_DATE(RECEIVE_DATE,'DD/MM/YYYY')
+	    FACTORY,
+	    ITEM_TEST,
+	    TO_DATE(RECEIVE_DATE,'DD/MM/YYYY'),
+	    FIXTURE_JIG_CODE,
+	    CAVITY_NO
     `;
 
     const result = await Conn.execute(query);
