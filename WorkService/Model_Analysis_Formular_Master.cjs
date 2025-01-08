@@ -32,6 +32,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetProcess = async function (req, res) {
     var query = "";
     try {
@@ -58,6 +59,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetMachine = async function (req, res) {
     var query = "";
     try {
@@ -85,6 +87,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetBath = async function (req, res) {
     var query = "";
     try {
@@ -114,6 +117,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetChemical = async function (req, res) {
     var query = "";
     try {
@@ -143,6 +147,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.Search_Analysis = async function (req, res) {
     var query = "";
     try {
@@ -219,6 +224,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetUnitPopup = async function (req, res) {
     var query = "";
     try {
@@ -244,6 +250,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetProcessPopup = async function (req, res) {
     var query = "";
     try {
@@ -269,6 +276,7 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
   module.exports.GetMachinePopup = async function (req, res) {
     var query = "";
     try {
@@ -295,7 +303,6 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
-
 
   module.exports.GetFileFormat = async function (req, res) {
     var query = "";
@@ -348,7 +355,29 @@ const {
       blobData.on('error', err => reject(err));
     });
   }
-  
+
+  async function GetChecmID(ChemDesc,Machine){ 
+    console.log(ChemDesc,Machine)
+    var query = "";
+    let data=''
+    // try {
+      const Conn = await ConnectOracleDB("FPC");
+      // const {Bath} = req.body
+      query += `
+        SELECT
+          FAM_CHEMICAL_ID
+        FROM FPCQ_ANALYSIS_MASTER
+
+        WHERE 1=1
+          AND FAM_CHEMICAL_DESC = '${ChemDesc}'
+          AND FAM_CHEMICAL_DESC2 ='${ChemDesc}'
+          AND FAM_MC_CODE = '${Machine}'`;
+      const result = await Conn.execute(query);
+      console.log('GetChecmID',result.rows)
+      DisconnectOracleDB(Conn);
+      return result.rows[0][0]
+
+  }
    
   module.exports.GetBathValue = async function (req, res) {
     var query = "";
@@ -373,3 +402,318 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+
+  module.exports.CheckChemical = async function (req, res) {
+    var query = "";
+    let data=''
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {MC_Code,Chem_Desc} = req.body
+      query += `
+          SELECT (SELECT B.FAB_BATH_DESC FROM FPCQ_ANALYSIS_BATH B WHERE B.FAB_BATH_ID=T.FAM_BATH_ID) AS F_BATH  
+          ,T.FAM_BATH_ID     
+          ,T.FAM_CHEMICAL_ID
+          ,T.FAM_CHEMICAL_DESC
+          ,T.FAM_SEQ
+          ,T.FAM_MC_CODE
+          ,T.FAM_FORMULA
+          ,T.FAM_INPUT
+          ,T.FAM_FORMULA_REFER_ID
+          ,T.FAM_FORMULA_REFER_ID2
+          ,T.FAM_REPLENISHER
+          ,T.FAM_FORMULA1
+          ,T.FAM_FORMULA2
+          ,T.FAM_REP_REFER_ID1
+          ,T.FAM_REP_REFER_ID2
+          ,T.FAM_CHEMICAL_DESC2
+          ,T.FAM_UNIT
+          ,T.FAM_TARGET
+          ,T.FAM_LCL
+          ,T.FAM_UCL
+          ,T.FAM_LSL
+          ,T.FAM_USL
+          ,T.FAM_STATUS
+          ,T.FAM_UPDATE_DATE
+          ,T.ROWID
+        FROM FPCQ_ANALYSIS_MASTER T
+        WHERE 1=1
+              AND T.FAM_MC_CODE='${MC_Code}'
+              AND TRIM(UPPER(T.FAM_CHEMICAL_DESC)) = TRIM(UPPER('${Chem_Desc}'))`;
+      const result = await Conn.execute(query);
+      // if(result.rows.length>0){
+      //   data=result.rows[0][0]
+      // }
+      res.status(200).json(result.rows);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+
+  module.exports.CheckChemical = async function (req, res) {
+    var query = "";
+    let data=''
+    try {
+      const Conn = await ConnectOracleDB("FPC");
+      const {MC_Code,Chem_Desc} = req.body
+      query += `
+          SELECT (SELECT B.FAB_BATH_DESC FROM FPCQ_ANALYSIS_BATH B WHERE B.FAB_BATH_ID=T.FAM_BATH_ID) AS F_BATH  
+          ,T.FAM_BATH_ID     
+          ,T.FAM_CHEMICAL_ID
+          ,T.FAM_CHEMICAL_DESC
+          ,T.FAM_SEQ
+          ,T.FAM_MC_CODE
+          ,T.FAM_FORMULA
+          ,T.FAM_INPUT
+          ,T.FAM_FORMULA_REFER_ID
+          ,T.FAM_FORMULA_REFER_ID2
+          ,T.FAM_REPLENISHER
+          ,T.FAM_FORMULA1
+          ,T.FAM_FORMULA2
+          ,T.FAM_REP_REFER_ID1
+          ,T.FAM_REP_REFER_ID2
+          ,T.FAM_CHEMICAL_DESC2
+          ,T.FAM_UNIT
+          ,T.FAM_TARGET
+          ,T.FAM_LCL
+          ,T.FAM_UCL
+          ,T.FAM_LSL
+          ,T.FAM_USL
+          ,T.FAM_STATUS
+          ,T.FAM_UPDATE_DATE
+          ,T.ROWID
+        FROM FPCQ_ANALYSIS_MASTER T
+        WHERE 1=1
+              AND T.FAM_MC_CODE='${MC_Code}'
+              AND TRIM(UPPER(T.FAM_CHEMICAL_DESC)) = TRIM(UPPER('${Chem_Desc}'))`;
+      const result = await Conn.execute(query);
+      // if(result.rows.length>0){
+      //   data=result.rows[0][0]
+      // }
+      res.status(200).json(result.rows);
+      DisconnectOracleDB(Conn);
+    } catch (error) {
+      writeLogError(error.message, query);
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+
+  module.exports.Ins_Chem = async function (req, res) {
+    let query = "";
+    try {
+        const Conn = await ConnectOracleDB("FPC");
+        const { data, Machine ,loginID} = req.body;
+        console.log(loginID, 'test');
+
+        query = `
+            INSERT INTO FPCQ_ANALYSIS_MASTER (
+                FAM_CHEMICAL_ID, FAM_BATH_ID, FAM_CHEMICAL_DESC, FAM_CHEMICAL_DESC2,
+                FAM_MC_CODE, FAM_SEQ, FAM_STATUS,
+                FAM_UNIT, FAM_TARGET, FAM_USL, FAM_LSL, FAM_UCL, FAM_LCL,
+                FAM_INPUT,
+                FAM_FORMULA, FAM_FORMULA_REFER_ID, FAM_FORMULA_REFER_ID2,
+                FAM_REPLENISHER, FAM_REP_REFER_ID1, FAM_REP_REFER_ID2, FAM_UPDATE_DATE,FAM_UPDATE_BY
+            ) VALUES (
+                (SELECT A.F_ID AS CHEMICALID
+                FROM (
+                    SELECT DISTINCT 'C' || TRIM(TO_CHAR(FAM_CHEMICAL_ID, '0000')) AS F_ID
+                    FROM (
+                        SELECT LEVEL + 1 AS FAM_CHEMICAL_ID
+                        FROM DUAL
+                        CONNECT BY LEVEL <= 4000
+                    ) NUMBERS
+                    WHERE FAM_CHEMICAL_ID NOT IN (
+                        SELECT SUBSTR(FAM_CHEMICAL_ID, 2, 4)
+                        FROM FPCQ_ANALYSIS_MASTER
+                    )
+                    ORDER BY 1
+                ) A
+                WHERE ROWNUM = 1
+                ), 
+                :BATH, :CHEMICAL, :CHEMICAL,
+                :Machine, :SEQ, 'A',
+                :UNIT, :TARGET, :USL, :LSL, :UCL, :LCL,
+                :INPUT,
+                :FORMULA, :FORMULA_REFER1, :REPLENISHER_REFER2,
+                :REPLENISHER, :REPLENISHER_REFER1, :REPLENISHER_REFER2, SYSDATE, :UPDATE_BY
+            )`;
+
+        const binds = {
+            BATH: data.BATH_ID,
+            CHEMICAL: data.CHEMICAL,
+            Machine: Machine,
+            SEQ: data.SEQ,
+            UNIT: data.UNIT,
+            TARGET: data.TARGET,
+            USL: data.USL,
+            LSL: data.LSL,
+            UCL: data.UCL,
+            LCL: data.LCL,
+            INPUT: data.INPUT,
+            FORMULA: data.FORMULA,
+            FORMULA_REFER1: data.FORMULA_REFER1,
+            REPLENISHER_REFER2: data.REPLENISHER_REFER2,
+            REPLENISHER: data.REPLENISHER,
+            REPLENISHER_REFER1: data.REPLENISHER_REFER1,
+            UPDATE_BY:loginID
+        };
+       
+        const result = await Conn.execute(query, binds,{ autoCommit: true });
+        // console.warn(result.rows);
+        res.status(200).json(result.rows);
+        await DisconnectOracleDB(Conn);
+    } catch (error) {
+      console.error(error.message);
+        writeLogError(error.message, query);
+        res.status(200).json( error.message );
+    }
+};
+
+module.exports.Update_Chem = async function (req, res) {
+  let query = "";
+  try {
+      const Conn = await ConnectOracleDB("FPC");
+      const { data, Machine ,loginID} = req.body;
+      // console.log(loginID, 'test');
+      let ChemID = await GetChecmID(data.CHEMICAL,Machine)
+      console.log(ChemID,'Checm')
+      query = `
+          UPDATE FPCQ_ANALYSIS_MASTER T
+            SET T.FAM_CHEMICAL_DESC=:CHEMICAL
+                ,T.FAM_CHEMICAL_DESC2=:CHEMICAL
+                ,T.FAM_SEQ=:SEQ
+                ,T.FAM_UNIT=:UNIT
+                ,T.FAM_TARGET=:TARGET
+                ,T.FAM_USL=:USL
+                ,T.FAM_LSL=:LSL
+                ,T.FAM_UCL=:UCL
+                ,T.FAM_LCL=:LCL
+                ,T.FAM_FORMULA=:FORMULA
+                ,T.FAM_FORMULA_REFER_ID=:FORMULA_REFER1
+                ,T.FAM_FORMULA_REFER_ID2=:FORMULA_REFER2
+                ,T.FAM_INPUT=:INPUT
+                ,T.FAM_STATUS='A'
+                ,T.FAM_REPLENISHER=:REPLENISHER
+                ,T.FAM_REP_REFER_ID1=:REPLENISHER_REFER1
+                ,T.FAM_REP_REFER_ID2=:REPLENISHER_REFER2
+                ,T.FAM_UPDATE_DATE=SYSDATE
+                ,T.FAM_UPDATE_BY=:UPDATE_BY
+            WHERE T.FAM_CHEMICAL_ID=:CHEMICAL_ID`;
+
+            const binds = {
+              CHEMICAL: data.CHEMICAL,
+              SEQ: data.SEQ,
+              UNIT: data.UNIT,
+              TARGET: data.TARGET,
+              USL: data.USL,
+              LSL: data.LSL,
+              UCL: data.UCL,
+              LCL: data.LCL,
+              FORMULA: data.FORMULA,
+              FORMULA_REFER1: data.FORMULA_REFER1,
+              FORMULA_REFER2: data.FORMULA_REFER2,
+              INPUT: data.INPUT,
+              REPLENISHER: data.REPLENISHER,
+              REPLENISHER_REFER1: data.REPLENISHER_REFER1,
+              REPLENISHER_REFER2: data.REPLENISHER_REFER2,
+              UPDATE_BY: loginID,
+              CHEMICAL_ID: ChemID,
+          };
+          
+     console.log(binds,'bimnd')
+      const result = await Conn.execute(query, binds,{ autoCommit: true });
+      // console.warn(result.rows);
+      res.status(200).json(result.rows);
+      await DisconnectOracleDB(Conn);
+  } catch (error) {
+    console.error(error.message);
+      writeLogError(error.message, query);
+      res.status(200).json( error.message );
+  }
+};
+
+
+module.exports.CheckMcChemBath = async function (req, res) {
+  var query = "";
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    const {BATH,MACHINE,CHEM} = req.body
+    query += `
+    SELECT
+      FAM_CHEMICAL_DESC
+    FROM
+      FPCQ_ANALYSIS_MASTER
+    WHERE
+      FAM_BATH_ID ='${BATH}'
+      AND FAM_MC_CODE ='${MACHINE}'
+      AND FAM_CHEMICAL_DESC ='${CHEM}'`;
+    const result = await Conn.execute(query);
+    res.status(200).json(result.rows);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports.Change_ChemID = async function (req, res) {
+  let query = "";
+  try {
+      const Conn = await ConnectOracleDB("FPC");
+      const { data, Machine ,loginID} = req.body;
+      // console.log(loginID, 'test');
+      // let ChemID = await GetChecmID(data.CHEMICAL,Machine)
+      // console.log(data,'data')
+      query = `
+          UPDATE FPCQ_ANALYSIS_MASTER T
+          SET T.FAM_FORMULA_REFER_ID=NVL(:FORMULA_REFER_ID1,T.FAM_FORMULA_REFER_ID)
+              ,T.FAM_FORMULA_REFER_ID2=NVL(:FORMULA_REFER_ID2,T.FAM_FORMULA_REFER_ID2)
+              ,T.FAM_REP_REFER_ID1=NVL(:REP_REFER_ID1,T.FAM_REP_REFER_ID1)
+              ,T.FAM_REP_REFER_ID2=NVL(:REP_REFER_ID2,T.FAM_REP_REFER_ID2)
+          WHERE T.FAM_CHEMICAL_ID=:CHEMICAL_ID
+          `;
+
+            const binds = {
+              FORMULA_REFER_ID1: data.FORMULA_REFER_ID1,
+              FORMULA_REFER_ID2: data.FORMULA_REFER_ID2,
+              REP_REFER_ID1: data.REP_REFER_ID1,
+              REP_REFER_ID2: data.REP_REFER_ID2,
+              CHEMICAL_ID: data.FAM_CHEMICAL_ID ,
+          };
+          
+     console.log(binds,'binds')
+      const result = await Conn.execute(query, binds,{ autoCommit: true });
+      // console.warn(result.rows);
+      res.status(200).json(result.rows);
+      await DisconnectOracleDB(Conn);
+  } catch (error) {
+    console.error(error.message);
+      writeLogError(error.message, query);
+      res.status(200).json( error.message );
+  }
+};
+
+
+module.exports.DeleteChem = async function (req, res) {
+  var query = "";
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    const {BATH,MACHINE,CHEM} = req.body
+    query += `
+    DELETE FROM FPCQ_ANALYSIS_MASTER
+    WHERE
+      FAM_BATH_ID ='${BATH}'
+      AND FAM_MC_CODE ='${MACHINE}'
+      AND FAM_CHEMICAL_DESC ='${CHEM}'`;
+    const result = await Conn.execute(query);
+    res.status(200).json(result.rows);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+

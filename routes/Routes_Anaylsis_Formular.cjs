@@ -13,7 +13,13 @@ router.post("/GetProcessPopup",Analysis.GetProcessPopup);
 router.post("/GetMachinePopup",Analysis.GetMachinePopup);
 router.post("/GetFileFormat",Analysis.GetFileFormat);
 router.post("/GetBathValue",Analysis.GetBathValue);
-
+router.post("/CheckChemical",Analysis.CheckChemical);
+router.post("/Ins_Chem",Analysis.Ins_Chem);
+router.post("/Update_Chem",Analysis.Update_Chem);
+router.post("/CheckChemical",Analysis.CheckChemical);
+router.post("/Change_ChemID",Analysis.Change_ChemID);
+router.post("/CheckMcChemBath",Analysis.CheckMcChemBath);
+router.post("/DeleteChem",Analysis.DeleteChem);
 
 
 

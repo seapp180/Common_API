@@ -50,6 +50,7 @@ const {
       const jsonData = result.rows.map(row => ({
         URL: row[0],
       }));
+      // console.log(result.rows,'result.rows');
       res.status(200).json(jsonData);
       DisconnectOracleDB(Conn);
     } catch (error) {
