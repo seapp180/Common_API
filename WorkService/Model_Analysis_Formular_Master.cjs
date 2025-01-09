@@ -457,7 +457,7 @@ const {
     let data=''
     try {
       const Conn = await ConnectOracleDB("FPC");
-      const {MC_Code,Chem_Desc} = req.body
+      // const {MC_Code,Chem_Desc} = req.body
       query += `
                       
      SELECT (SELECT A.FAM_CHEMICAL_ID
@@ -687,13 +687,36 @@ module.exports.CheckMcChemBath = async function (req, res) {
     const {BATH,MACHINE,CHEM} = req.body
     query += `
     SELECT
-      FAM_CHEMICAL_DESC
+      FAM_CHEMICAL_DESC,FAM_SEQ
     FROM
       FPCQ_ANALYSIS_MASTER
     WHERE
       FAM_BATH_ID ='${BATH}'
       AND FAM_MC_CODE ='${MACHINE}'
       AND FAM_CHEMICAL_DESC ='${CHEM}'`;
+    const result = await Conn.execute(query);
+    res.status(200).json(result.rows);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports.CheckSEQChemBath = async function (req, res) {
+  var query = "";
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    const {BATH,MACHINE,SEQ} = req.body
+    query += `
+    SELECT
+      FAM_CHEMICAL_DESC,FAM_SEQ
+    FROM
+      FPCQ_ANALYSIS_MASTER
+    WHERE
+      FAM_BATH_ID ='${BATH}'
+      AND FAM_MC_CODE ='${MACHINE}'
+      AND FAM_SEQ ='${SEQ}'`;
     const result = await Conn.execute(query);
     res.status(200).json(result.rows);
     DisconnectOracleDB(Conn);

@@ -20,6 +20,7 @@ router.post("/CheckChemDesc",Analysis.CheckChemDesc);
 router.post("/Change_ChemID",Analysis.Change_ChemID);
 router.post("/CheckMcChemBath",Analysis.CheckMcChemBath);
 router.post("/DeleteChem",Analysis.DeleteChem);
+router.post("/CheckSEQChemBath",Analysis.CheckSEQChemBath);
 
 
 
