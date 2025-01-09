@@ -452,47 +452,91 @@ const {
   };
 
 
-  module.exports.CheckChemical = async function (req, res) {
+  module.exports.CheckChemDesc = async function (req, res) {
     var query = "";
     let data=''
     try {
       const Conn = await ConnectOracleDB("FPC");
       const {MC_Code,Chem_Desc} = req.body
       query += `
-          SELECT (SELECT B.FAB_BATH_DESC FROM FPCQ_ANALYSIS_BATH B WHERE B.FAB_BATH_ID=T.FAM_BATH_ID) AS F_BATH  
-          ,T.FAM_BATH_ID     
-          ,T.FAM_CHEMICAL_ID
-          ,T.FAM_CHEMICAL_DESC
-          ,T.FAM_SEQ
-          ,T.FAM_MC_CODE
-          ,T.FAM_FORMULA
-          ,T.FAM_INPUT
-          ,T.FAM_FORMULA_REFER_ID
-          ,T.FAM_FORMULA_REFER_ID2
-          ,T.FAM_REPLENISHER
-          ,T.FAM_FORMULA1
-          ,T.FAM_FORMULA2
-          ,T.FAM_REP_REFER_ID1
-          ,T.FAM_REP_REFER_ID2
-          ,T.FAM_CHEMICAL_DESC2
-          ,T.FAM_UNIT
-          ,T.FAM_TARGET
-          ,T.FAM_LCL
-          ,T.FAM_UCL
-          ,T.FAM_LSL
-          ,T.FAM_USL
-          ,T.FAM_STATUS
-          ,T.FAM_UPDATE_DATE
-          ,T.ROWID
-        FROM FPCQ_ANALYSIS_MASTER T
-        WHERE 1=1
-              AND T.FAM_MC_CODE='${MC_Code}'
-              AND TRIM(UPPER(T.FAM_CHEMICAL_DESC)) = TRIM(UPPER('${Chem_Desc}'))`;
+                      
+     SELECT (SELECT A.FAM_CHEMICAL_ID
+            FROM FPCQ_ANALYSIS_MASTER A
+            WHERE A.FAM_BATH_ID=T.FAM_BATH_ID
+                  AND A.FAM_MC_CODE=T.FAM_MC_CODE
+                  AND UPPER(TRIM(A.FAM_CHEMICAL_DESC))=UPPER(TRIM(T.FAM_FORMULA_REFER_ID))) AS FORMULA_REFER_ID1
+           ,(SELECT A.FAM_CHEMICAL_ID
+            FROM FPCQ_ANALYSIS_MASTER A
+            WHERE A.FAM_BATH_ID=T.FAM_BATH_ID
+                  AND A.FAM_MC_CODE=T.FAM_MC_CODE
+                  AND UPPER(TRIM(A.FAM_CHEMICAL_DESC))=UPPER(TRIM(T.FAM_FORMULA_REFER_ID2))) AS FORMULA_REFER_ID2
+           ,(SELECT A.FAM_CHEMICAL_ID
+            FROM FPCQ_ANALYSIS_MASTER A
+            WHERE A.FAM_BATH_ID=T.FAM_BATH_ID
+                  AND A.FAM_MC_CODE=T.FAM_MC_CODE
+                  AND UPPER(TRIM(A.FAM_CHEMICAL_DESC))=UPPER(TRIM(T.FAM_REP_REFER_ID1))) AS REP_REFER_ID1
+           ,(SELECT A.FAM_CHEMICAL_ID
+            FROM FPCQ_ANALYSIS_MASTER A
+            WHERE A.FAM_BATH_ID=T.FAM_BATH_ID
+                  AND A.FAM_MC_CODE=T.FAM_MC_CODE
+                  AND UPPER(TRIM(A.FAM_CHEMICAL_DESC))=UPPER(TRIM(T.FAM_REP_REFER_ID2))) AS REP_REFER_ID2
+           ,T.FAM_CHEMICAL_ID,T.FAM_BATH_ID,T.FAM_MC_CODE,T.FAM_CHEMICAL_DESC
+           ,T.FAM_FORMULA_REFER_ID,T.FAM_FORMULA_REFER_ID2
+           ,T.FAM_REP_REFER_ID1,T.FAM_REP_REFER_ID2
+    FROM FPCQ_ANALYSIS_MASTER T
+    WHERE (T.FAM_FORMULA_REFER_ID IS NOT NULL
+          OR T.FAM_FORMULA_REFER_ID2 IS NOT NULL
+          OR T.FAM_REP_REFER_ID1 IS NOT NULL
+          OR T.FAM_REP_REFER_ID2 IS NOT NULL)
+          AND
+              (
+                (
+                  (SELECT COUNT(T2.FAM_CHEMICAL_DESC)
+                   FROM FPCQ_ANALYSIS_MASTER T2
+                   WHERE T2.FAM_CHEMICAL_ID=T.FAM_FORMULA_REFER_ID) <=0
+                         AND T.FAM_FORMULA_REFER_ID IS NOT NULL
+                 )
+                 OR
+                (
+                  (SELECT COUNT(T2.FAM_CHEMICAL_DESC)
+                   FROM FPCQ_ANALYSIS_MASTER T2
+                   WHERE T2.FAM_CHEMICAL_ID=T.FAM_FORMULA_REFER_ID2) <=0
+                         AND T.FAM_FORMULA_REFER_ID2 IS NOT NULL
+                 )
+                 OR
+                (
+                  (SELECT COUNT(T2.FAM_CHEMICAL_DESC)
+                   FROM FPCQ_ANALYSIS_MASTER T2
+                   WHERE T2.FAM_CHEMICAL_ID=T.FAM_REP_REFER_ID1) <=0
+                         AND T.FAM_REP_REFER_ID1 IS NOT NULL
+                 )
+                 OR
+                (
+                  (SELECT COUNT(T2.FAM_CHEMICAL_DESC)
+                   FROM FPCQ_ANALYSIS_MASTER T2
+                   WHERE T2.FAM_CHEMICAL_ID=T.FAM_REP_REFER_ID2) <=0
+                         AND T.FAM_REP_REFER_ID2 IS NOT NULL
+                 )
+              )`;
+              // console.l
       const result = await Conn.execute(query);
-      // if(result.rows.length>0){
-      //   data=result.rows[0][0]
-      // }
-      res.status(200).json(result.rows);
+      console.log(result.rows,'test3')
+      const jsonData = result.rows.map(row => ({
+        FORMULA_REFER_ID1: row[0],
+        FORMULA_REFER_ID2: row[1],
+        REP_REFER_ID1: row[2],
+        REP_REFER_ID2: row[3],
+        CHEMICAL_ID: row[4],
+        FAM_BATH_ID: row[5],
+        FAM_MC_CODE: row[6],
+        FAM_CHEMICAL_DESC: row[7],
+        FAM_FORMULA_REFER_ID1: row[8],
+        FAM_FORMULA_REFER_ID2: row[9],
+        FAM_REP_REFER_ID1: row[10],
+        FAM_REP_REFER_ID2: row[11],
+      }));
+      
+      res.status(200).json(jsonData);
       DisconnectOracleDB(Conn);
     } catch (error) {
       writeLogError(error.message, query);
@@ -666,7 +710,7 @@ module.exports.Change_ChemID = async function (req, res) {
       const { data, Machine ,loginID} = req.body;
       // console.log(loginID, 'test');
       // let ChemID = await GetChecmID(data.CHEMICAL,Machine)
-      // console.log(data,'data')
+      console.log(data,'data')
       query = `
           UPDATE FPCQ_ANALYSIS_MASTER T
           SET T.FAM_FORMULA_REFER_ID=NVL(:FORMULA_REFER_ID1,T.FAM_FORMULA_REFER_ID)
@@ -681,7 +725,7 @@ module.exports.Change_ChemID = async function (req, res) {
               FORMULA_REFER_ID2: data.FORMULA_REFER_ID2,
               REP_REFER_ID1: data.REP_REFER_ID1,
               REP_REFER_ID2: data.REP_REFER_ID2,
-              CHEMICAL_ID: data.FAM_CHEMICAL_ID ,
+              CHEMICAL_ID: data.CHEMICAL_ID ,
           };
           
      console.log(binds,'binds')
@@ -705,10 +749,19 @@ module.exports.DeleteChem = async function (req, res) {
     query += `
     DELETE FROM FPCQ_ANALYSIS_MASTER
     WHERE
-      FAM_BATH_ID ='${BATH}'
-      AND FAM_MC_CODE ='${MACHINE}'
-      AND FAM_CHEMICAL_DESC ='${CHEM}'`;
-    const result = await Conn.execute(query);
+      FAM_BATH_ID =:BATH
+      AND FAM_MC_CODE =:MACHINE
+      AND FAM_CHEMICAL_DESC =:CHEM `;
+      // console.log(query)
+      const binds = {
+        BATH: BATH,
+        MACHINE: MACHINE,
+        CHEM: CHEM,
+       
+   
+    };
+      const result = await Conn.execute(query, binds,{ autoCommit: true });
+    // const result = await Conn.execute(query);
     res.status(200).json(result.rows);
     DisconnectOracleDB(Conn);
   } catch (error) {
