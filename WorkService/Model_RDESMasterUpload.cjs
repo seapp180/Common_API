@@ -79,6 +79,7 @@ module.exports.FileFormat = async function (req, res) {
   }
 };
 
+
 module.exports.InsUploadFile = async function (req, res) {
   let Conn;
   let query;
@@ -135,13 +136,4 @@ module.exports.DeleteUploadFile = async function (req, res) {
     res.status(500).json({ message: error.message });
   }
 };
-
-async function readBlobData(blobData) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    blobData.on("data", (chunk) => chunks.push(chunk));
-    blobData.on("end", () => resolve(Buffer.concat(chunks)));
-    blobData.on("error", (err) => reject(err));
-  });
-}
 
