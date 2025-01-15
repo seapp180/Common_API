@@ -26,6 +26,7 @@ const Common = require("./routes/Routes_Common.cjs")
 const Shipmentschedulemaintain = require("./routes/Routes_Shipmentschedulemaintain.cjs");
 const QA_ORT_WorkingRecord = require("./routes/Routes_QA_ORT_WorkingRecord.cjs");
 const Analysis_Formular = require("./routes/Routes_Anaylsis_Formular.cjs");
+const BoxCapacity = require("./routes/Routes_BoxCapacity.cjs");
 // ---------------------------------------- ------------------
 app.use("/api/RDESMasterUpload", RDESMasterUpload);
 app.use("/api/Common", Common);
@@ -33,6 +34,7 @@ app.use("/api/Shipment", Shipmentschedulemaintain);
 app.use("/api/QA_ORT_WorkingRecord", QA_ORT_WorkingRecord);
 app.use("/api/Analysis_Formular", Analysis_Formular);
 app.use("/api/QAORTWorkingRecord", QA_ORT_WorkingRecord);
+app.use("/api/BoxCapacity", BoxCapacity);
 // ----------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
