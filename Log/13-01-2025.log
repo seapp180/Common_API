@@ -1,0 +1,48 @@
+[13-01-2025 10:32:24] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 10:32:26] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 10:32:39] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 10:33:13] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 10:47:06] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 10:47:08] ERROR : readBlobData is not defined
+  QUERY : 
+          SELECT T.CMT_FILE_FORMAT													  
+          FROM FPCC_CONTROL_MASTER_TYPE T													  
+          WHERE T.CMT_CODE ='0034'		 
+ -------------------------------------------------------------- 
+[13-01-2025 15:49:55] ERROR : ORA-00911: invalid character
+  QUERY : 
+    SELECT DISTINCT T.FAMM_MC_ID AS F_VAL, T.FAMM_MC_DESC AS F_TXT,1 AS SEQ
+FROM FPCQ_ANALYSIS_MC_M T INNER JOIN FPCQ_ANALYSIS_PROCESS_M P ON P.FAPM_PROCESS_ID=T.FAMM_PROC
+WHERE T.FAMM_STATUS = 'A'
+      AND (T.FAMM_PROC = '' OR  '' IS NULL)
+      AND (P.FAPM_UNIT = 'U003' OR 'U003' IS NULL)
+UNION ALL
+SELECT '','ALL',0 FROM DUAL
+ORDER BY 3,2;
+               
+ -------------------------------------------------------------- 
