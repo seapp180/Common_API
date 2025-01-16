@@ -14,12 +14,12 @@ router.post("/GetMachinePopup",Analysis.GetMachinePopup);
 router.post("/GetFileFormat",Analysis.GetFileFormat);
 router.post("/GetBathValue",Analysis.GetBathValue);
 router.post("/CheckChemical",Analysis.CheckChemical);
-router.post("/Ins_Chem",Analysis.Ins_Chem);
-router.post("/Update_Chem",Analysis.Update_Chem);
+// router.post("/Ins_Chem",Analysis.Ins_Chem);
+// router.post("/Update_Chem",Analysis.Update_Chem);
 router.post("/CheckChemDesc",Analysis.CheckChemDesc);
 router.post("/Change_ChemID",Analysis.Change_ChemID);
 router.post("/CheckMcChemBath",Analysis.CheckMcChemBath);
 router.post("/DeleteChem",Analysis.DeleteChem);
 router.post("/CheckSEQChemBath",Analysis.CheckSEQChemBath);
-
+router.post("/Merge_Chem",Analysis.Merge_Chem);
 module.exports = router;
