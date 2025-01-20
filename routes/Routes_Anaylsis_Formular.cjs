@@ -22,4 +22,7 @@ router.post("/CheckMcChemBath",Analysis.CheckMcChemBath);
 router.post("/DeleteChem",Analysis.DeleteChem);
 router.post("/CheckSEQChemBath",Analysis.CheckSEQChemBath);
 router.post("/Merge_Chem",Analysis.Merge_Chem);
+router.post("/Delete_Chemical_And_Backup",Analysis.Delete_Chemical_And_Backup);
+router.post("/Check_UseChem",Analysis.Check_UseChem);
+
 module.exports = router;

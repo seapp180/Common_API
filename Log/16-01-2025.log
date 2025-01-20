@@ -1,0 +1,9 @@
+[16-01-2025 16:13:10] ERROR : ORA-01036: illegal variable name/number
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[16-01-2025 16:20:19] ERROR : DPI-1050: Oracle Client library is at version 11.2 but version 12.1 or higher is needed
+  QUERY : undefined 
+ -------------------------------------------------------------- 
+[16-01-2025 16:21:07] ERROR : ORA-01036: illegal variable name/number
+  QUERY : undefined 
+ -------------------------------------------------------------- 
