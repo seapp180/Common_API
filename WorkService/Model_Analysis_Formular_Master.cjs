@@ -16,8 +16,7 @@ async function readBlobData(blobData) {
   });
 }
 
-async function GetChecmID(ChemDesc, Machine) {
-  console.log(ChemDesc, Machine);
+async function GetChecmID(ChemDesc, Machine) { 
   var query = "";
   let data = "";
   // try {
@@ -32,7 +31,6 @@ async function GetChecmID(ChemDesc, Machine) {
           AND FAM_CHEMICAL_DESC2 ='${ChemDesc}'
           AND FAM_MC_CODE = '${Machine}'`;
   const result = await Conn.execute(query);
-  console.log("GetChecmID", result.rows);
   DisconnectOracleDB(Conn);
   if(result.rows.length>0){
     data = result.rows[0][0];
@@ -96,7 +94,6 @@ module.exports.GetMachine = async function (req, res) {
   try {
     const Conn = await ConnectOracleDB("FPC");
     const { PARAMETER_PROCESS,PARAMETER_UNIT } = req.body;
-    console.log(PARAMETER_PROCESS,PARAMETER_UNIT,'GetMC')
     query += `
     SELECT DISTINCT T.FAMM_MC_ID AS F_VAL, T.FAMM_MC_DESC AS F_TXT,1 AS SEQ
     FROM FPCQ_ANALYSIS_MC_M T INNER JOIN FPCQ_ANALYSIS_PROCESS_M P ON P.FAPM_PROCESS_ID=T.FAMM_PROC
@@ -163,7 +160,6 @@ module.exports.GetChemical = async function (req, res) {
       UNION ALL
       SELECT '','ALL',0,0 FROM DUAL
       ORDER BY 4,3,2 `;
-      console.log(query,'GetChemical')
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
       value: row[0] ?? "",
@@ -189,14 +185,7 @@ module.exports.Search_Analysis = async function (req, res) {
       PARAMETER_BATH,
       PARAMETER_CHEMICAL,
     } = req.body;
-    console.log(
-      "Search",
-      PARAMETER_UNIT,
-      PARAMETER_PROCESS,
-      PARAMETER_MC,
-      PARAMETER_BATH,
-      PARAMETER_CHEMICAL
-    );
+
     query += `
       SELECT
         U.FAUM_UNIT_DESC, --0
@@ -236,7 +225,7 @@ module.exports.Search_Analysis = async function (req, res) {
         AND (T.FAM_CHEMICAL_ID = '${PARAMETER_CHEMICAL}' OR '${PARAMETER_CHEMICAL}' IS NULL)
        ORDER BY U.FAUM_UNIT_DESC,P.FAPM_PROCESS_DESC,M.FAMM_MC_ID,B.FAB_BATH_DESC,T.FAM_SEQ
                   `;
-    // console.log(query)
+
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
       FAUM_UNIT_DESC: row[0],
@@ -356,7 +345,7 @@ module.exports.GetFileFormat = async function (req, res) {
         WHERE T.CMT_CODE ='0038'	`;
 
     const result = await Conn.execute(query);
-    console.log(result.rows);
+
     if (result.rows.length > 0) {
       const blobData = result.rows[0][0];
 
@@ -523,7 +512,7 @@ module.exports.CheckChemDesc = async function (req, res) {
               )`;
     // console.l
     const result = await Conn.execute(query);
-    console.log(result.rows, "test3");
+
     const jsonData = result.rows.map((row) => ({
       FORMULA_REFER_ID1: row[0],
       FORMULA_REFER_ID2: row[1],
@@ -599,9 +588,8 @@ module.exports.Change_ChemID = async function (req, res) {
   try {
     const Conn = await ConnectOracleDB("FPC");
     const { data, Machine, loginID } = req.body;
-    // console.log(loginID, 'test');
-    // let ChemID = await GetChecmID(data.CHEMICAL,Machine)
-    console.log(data, "data");
+
+
     query = `
           UPDATE FPCQ_ANALYSIS_MASTER T
           SET T.FAM_FORMULA_REFER_ID=NVL(:FORMULA_REFER_ID1,T.FAM_FORMULA_REFER_ID)
@@ -619,7 +607,6 @@ module.exports.Change_ChemID = async function (req, res) {
       CHEMICAL_ID: data.CHEMICAL_ID,
     };
 
-    console.log(binds, "binds");
     const result = await Conn.execute(query, binds, { autoCommit: true });
     // console.warn(result.rows);
     res.status(200).json(result.rows);
@@ -642,7 +629,7 @@ module.exports.DeleteChem = async function (req, res) {
       FAM_BATH_ID =:BATH
       AND FAM_MC_CODE =:MACHINE
       AND FAM_CHEMICAL_DESC =:CHEM `;
-    // console.log(query)
+
     const binds = {
       BATH: BATH,
       MACHINE: MACHINE,
@@ -756,9 +743,9 @@ module.exports.Merge_Chem = async function (req, res) {
 //   try {
 //     const Conn = await ConnectOracleDB("FPC");
 //     const { data, Machine, loginID } = req.body;
-//     // console.log(loginID, 'test');
+
 //     // let ChemID = await GetChecmID(data.CHEMICAL,Machine)
-//     console.log(data, "data");
+
 //     query = `
 //         SELECT COUNT(T.FAR_DATE) AS F_COUNT
 //         FROM FPCQ_ANALYSIS_RECORD T
@@ -782,8 +769,8 @@ module.exports.Check_UseChem = async function (req, res) {
   try {
     const Conn = await ConnectOracleDB("FPC");
     const { Chem_ID } = req.body;
-    // let Chem_ID = await GetChecmID(Chem_DESC,Machine)
-    console.log(Chem_ID, "Chem_ID");
+
+
     query = `
         SELECT COUNT(T.FAR_DATE) AS F_COUNT
         FROM FPCQ_ANALYSIS_RECORD T
@@ -839,11 +826,8 @@ module.exports.Delete_Chemical_And_Backup = async function (req, res) {
       
     const result1 = await Conn.execute(query1, params1, { autoCommit: true });
     const result2 = await Conn.execute(query2, params2, { autoCommit: true });
-    console.log("-----------------------");
-    console.log(result1, "result2");
-    console.log("-----------------------");
-    console.log(result2, "result3");
-    console.log("-----------------------");
+
+
     res.status(200).json(result2.rows);
     DisconnectOracleDB(Conn);
   } catch (error) {
@@ -859,7 +843,7 @@ module.exports.Delete_Chemical_And_Backup = async function (req, res) {
 //   try {
 //     const Conn = await ConnectOracleDB("FPC");
 //     const { data, Machine, loginID } = req.body;
-//     console.log(loginID, "test");
+
 
 //     query = `
 //             INSERT INTO FPCQ_ANALYSIS_MASTER (
@@ -930,9 +914,9 @@ module.exports.Delete_Chemical_And_Backup = async function (req, res) {
 //   try {
 //     const Conn = await ConnectOracleDB("FPC");
 //     const { data, Machine, loginID } = req.body;
-//     // console.log(loginID, 'test');
+
 //     let ChemID = await GetChecmID(data.CHEMICAL, Machine);
-//     console.log(ChemID, "Checm");
+
 //     query = `
 //           UPDATE FPCQ_ANALYSIS_MASTER T
 //             SET T.FAM_CHEMICAL_DESC=:CHEMICAL
@@ -975,8 +959,6 @@ module.exports.Delete_Chemical_And_Backup = async function (req, res) {
 //       UPDATE_BY: loginID,
 //       CHEMICAL_ID: ChemID,
 //     };
-
-//     console.log(binds, "bimnd");
 //     const result = await Conn.execute(query, binds, { autoCommit: true });
 //     // console.warn(result.rows);
 //     res.status(200).json(result.rows);

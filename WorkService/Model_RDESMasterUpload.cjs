@@ -12,7 +12,7 @@ module.exports.Search = async function (req, res) {
   try {
     const Conn = await ConnectOracleDB("FPC");
     const { Product } = req.body;
-    console.log(Product);
+
     query += `
         SELECT T.CMM_KEY_1 AS F_PRODUCT,
         T.CMM_KEY_2 AS F_PROCESS,
@@ -86,7 +86,6 @@ module.exports.InsUploadFile = async function (req, res) {
   try {
     Conn = await ConnectOracleDB("FPC");
     const { Product, Process, Machine, Chamber, Mode, Holding } = req.body;
-    console.log(Product, Process, Machine, Chamber, Mode, Holding, "may");
 
     const query = `
       INSERT INTO FPCC_CONTROL_MASTER_MAINTAIN(CMM_TYPE, CMM_KEY_1, CMM_KEY_2, CMM_KEY_3, CMM_VALUE_NUM_1, CMM_VALUE_NUM_2, CMM_VALUE_CHR_1)
@@ -100,7 +99,7 @@ module.exports.InsUploadFile = async function (req, res) {
       insmode: Mode,
       insholding: Holding,
     };
-    console.log(params, "pa");
+
     const result = await Conn.execute(query, params, { autoCommit: true });
     res.status(200).json(result.rows);
     DisconnectOracleDB(Conn);
