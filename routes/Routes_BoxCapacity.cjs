@@ -13,6 +13,11 @@ router.post("/DataBoxno", Model_BoxCapacity.DataBoxno);
 router.post("/DataFullBoxQTY", Model_BoxCapacity.DataFullBoxQTY);
 router.post("/DataSeq", Model_BoxCapacity.DataSeq);
 router.post("/LotNo", Model_BoxCapacity.LotNo);
+router.post("/DataHeader", Model_BoxCapacity.DataHeader);
+router.post("/UpdateBoxQty", Model_BoxCapacity.UpdateBoxQty);
+router.post("/UpdateManual", Model_BoxCapacity.UpdateManual);
+
+
 
 
 
