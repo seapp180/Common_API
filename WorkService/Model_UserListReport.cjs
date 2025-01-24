@@ -111,7 +111,7 @@ FROM
           ) AS USER_QAD_REMARK	
   FROM CUSR.CU_USER_HUMANTRIX T	
   WHERE 1=1	
-      --  AND (T.TERM_DATE IS NOT NULL AND T.TERM_DATE <= SYSDATE + 1)--comment if get data all	
+        AND (T.TERM_DATE IS NOT NULL AND T.TERM_DATE <= SYSDATE + 1)--comment if get data all	
         AND UPPER(T.WORKTYPE)  <> 'SD,SUBCONTRACT DAILY'	
   ORDER BY 1	
 ) A	
