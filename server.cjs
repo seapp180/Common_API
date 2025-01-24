@@ -6,7 +6,7 @@ const cors = require('cors');
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'], // เพิ่ม headers ที่จำเป็น
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 
@@ -30,6 +30,7 @@ const UserListReport = require("./routes/Routes_UserListReport.cjs");
 const BoxCapacity = require("./routes/Routes_BoxCapacity.cjs");
 const zPO_Report = require("./routes/Routes_zPO_Report.cjs");
 const zPO_Summary = require("./routes/Routes_zPO_Summary.cjs")
+const Oqc_barcode = require("./routes/Routes_Oqc_barcode.cjs");
 // ---------------------------------------- ------------------
 app.use("/api/RDESMasterUpload", RDESMasterUpload);
 app.use("/api/Common", Common);
@@ -41,6 +42,7 @@ app.use("/api/UserListReport", UserListReport);
 app.use("/api/BoxCapacity", BoxCapacity);
 app.use("/api/zPO_Report", zPO_Report);
 app.use("/api/zPO_Summary", zPO_Summary);
+app.use("/api/Oqc_barcode", Oqc_barcode);
 // ----------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
