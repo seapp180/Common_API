@@ -16,6 +16,18 @@ router.post("/LotNo", Model_BoxCapacity.LotNo);
 router.post("/DataHeader", Model_BoxCapacity.DataHeader);
 router.post("/UpdateBoxQty", Model_BoxCapacity.UpdateBoxQty);
 router.post("/UpdateManual", Model_BoxCapacity.UpdateManual);
+router.post("/DataLotPacking", Model_BoxCapacity.DataLotPacking);
+router.post("/DataReceive", Model_BoxCapacity.DataReceive);
+router.post("/GetDataBoxMainTain", Model_BoxCapacity.GetDataBoxMainTain);
+router.post("/DeleteLotPacking", Model_BoxCapacity.DeleteLotPacking);
+router.post("/UpdateSeqLotPacking", Model_BoxCapacity.UpdateSeqLotPacking);
+router.post("/UpdateBoxMaster", Model_BoxCapacity.UpdateBoxMaster);
+router.post("/DeleteBoxMaintain", Model_BoxCapacity.DeleteBoxMaintain);
+router.post("/DataMapping", Model_BoxCapacity.DataMapping);
+router.post("/InsBoxCapacity1", Model_BoxCapacity.InsBoxCapacity1);
+router.post("/DataRemainQTY_AUTO", Model_BoxCapacity.DataRemainQTY_AUTO);
+
+
 
 
 

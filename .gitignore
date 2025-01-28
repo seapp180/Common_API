@@ -1,5 +1,4 @@
 /.env
 node_modules
 tnsnames.ora
-
-log
+Log
