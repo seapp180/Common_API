@@ -59,16 +59,63 @@ module.exports.GetAlldtData = async function (req, res) {
 
                   `;
     const result = await Conn.execute(query);
-    console.log(result);
     if (result.rows.length > 0) {
       res.status(200).json(result.rows[0]);
     } else {
       res.status(404).json({ message: "Not Found Data" });
     }
-    res.status(200).json(jsonData);
     DisconnectOracleDB(Conn);
   } catch (error) {
     writeLogError(error.message, query);
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.UpdatedData = async function (req, res) {
+  var query = "";
+  const { strLotNo,strLogInid } = req.query;
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    query +=      `					
+                        UPDATE COND.QA_OQC_2D_HEADER T	
+                          SET T.QOH_CONFIRM_BY=:strLogInid
+                              ,T.QOH_CONFIRM_DATE=SYSDATE	
+                          WHERE T.QOH_LOT=:strLotNo				
+                  `;
+    const params = {
+      strLogInid: strLogInid,
+      strLotNo: strLotNo
+    }
+    const result = await Conn.execute(query,params,{autoCommit:true});
+    if (result.rowsAffected > 0) {
+      res.status(200).json({ message: "Updated Success" });
+    } else {
+      res.status(404).json({ message: "Not Found Data" });
+    }
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }  
+}
+module.exports.GetpopUpdata = async function (req, res) {
+  var query = "";
+  const { strLotNo } = req.query;
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    query = `SELECT LO.LOT_PRD_NAME AS F_PRODUCT		
+                  ,LO.LOT AS F_LOT		
+                  ,TO_CHAR(D.QOD_DATE,'DD/MM/YYYY') AS F_DATE		
+                  ,D.QOD_SERIAL AS F_SERIAL		
+                  ,D.QOD_GRADE AS F_GRADE		
+            FROM COND.QA_OQC_2D_DATA D INNER JOIN FPC.FPC_LOT LO ON LO.LOT=D.QOD_LOT		
+            WHERE D.QOD_LOT='${strLotNo}' `;
+    const result = await Conn.execute(query);
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: "Not Found Data" });
+    }
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+}
