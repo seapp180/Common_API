@@ -1,6 +1,6 @@
 const {
   ConnectPG_DB,
-  DisconnectPG_DB, 
+  DisconnectPG_DB,
   ConnectOracleDB,
   DisconnectOracleDB,
 } = require("../../Conncetion/DBConn.cjs");
@@ -10,6 +10,7 @@ const { writeLogError } = require("../../Common/LogFuction.cjs");
 module.exports.GetAlldtDataReport = async function (req, res) {
   var query = "";
   const { strLotNo, strProduct, strDateFrom, strDateTo } = req.query;
+  console.log(strLotNo, strProduct, strDateFrom, strDateTo);
   try {
     const Conn = await ConnectOracleDB("FPC");
     query += `SELECT B.*																																		
@@ -56,16 +57,38 @@ module.exports.GetAlldtDataReport = async function (req, res) {
                                                 LEFT JOIN FPC.NAP_USER_LOGIN U ON U.LOGIN_ID=T.QOH_CONFIRM_BY																																		
                     WHERE L.LOT_PRD_NAME LIKE UPPER('${strProduct}') || '%'																																		
                             AND L.LOT LIKE UPPER('${strLotNo}') || '%'																																		
-                            AND (TO_CHAR(T.QOH_DATE,'YYYYMMDD') >= '${strDateFrom}' OR '${strDateFrom}' IS NULL)																																		
-                            AND (TO_CHAR(T.QOH_DATE,'YYYYMMDD') <= '${strDateTo}' OR '${strDateTo}' IS NULL)																																		
+                            AND (TO_CHAR(T.QOH_DATE,'YYYY-MM-DD') >= '${strDateFrom}' OR '${strDateFrom}' IS NULL)																																		
+                            AND (TO_CHAR(T.QOH_DATE,'YYYY-MM-DD') <= '${strDateTo}' OR '${strDateTo}' IS NULL)																																		
                     ORDER BY T.QOH_DATE,L.LOT_PRD_NAME,T.QOH_LOT																																		
                     ) B	`;
     const result = await Conn.execute(query);
     DisconnectOracleDB(Conn);
-    res.status(200).send(result.rows);
+
+    if (result.rows.length > 0) {
+      const jsonRespone = result.rows.map((item) => ({
+        product: item[0],
+        lot: item[1],
+        date2: item[2],
+        lot_size: item[3],
+        sampling_size: item[4],
+        aperture: item[5],
+        good2: item[6],
+        ng2: item[7],
+        inspector: item[8],
+        shift: item[9],
+        confirm_by: item[10],
+        date: item[11],
+        good: item[12],
+        ng: item[13],
+        judgement: item[14],
+      }));
+      res.status(200).json(jsonRespone);
+    } else {
+      res.status(204).json({ message: "Not Found Data" });
+    }
   } catch (error) {
-    writeLogError("GetAlldtData", error);
-    res.status(500).send({ message: "Internal Server Error" });
+    writeLogError(error.message, query);
+    res.status(500).send({ message: error.message });
   }
 };
 module.exports.GetpopUpdataReport = async function (req, res) {

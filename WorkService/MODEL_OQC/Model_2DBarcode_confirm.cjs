@@ -60,9 +60,25 @@ module.exports.GetAlldtData = async function (req, res) {
                   `;
     const result = await Conn.execute(query);
     if (result.rows.length > 0) {
-      res.status(200).json(result.rows[0]);
+      const jsonRespone = result.rows.map((item) => ({
+        product: item[0],
+        lot: item[1],
+        date2: item[2],
+        lot_size: item[3],
+        sampling_size: item[4],
+        aperture: item[5],
+        good2: item[6],
+        ng2: item[7],
+        inspector: item[8],
+        shift: item[9],
+        date: item[10],
+        good: item[11],
+        ng: item[12],
+        judgement: item[13],
+      }));
+      res.status(200).json(jsonRespone);
     } else {
-      res.status(404).json({ message: "Not Found Data" });
+      res.status(204).json({ message: "Not Found Data" });
     }
     DisconnectOracleDB(Conn);
   } catch (error) {
@@ -72,10 +88,10 @@ module.exports.GetAlldtData = async function (req, res) {
 };
 module.exports.UpdatedData = async function (req, res) {
   var query = "";
-  const { strLotNo,strLogInid } = req.query;
+  const { strLotNo, strLogInid } = req.query;
   try {
     const Conn = await ConnectOracleDB("FPC");
-    query +=      `					
+    query += `					
                         UPDATE COND.QA_OQC_2D_HEADER T	
                           SET T.QOH_CONFIRM_BY=:strLogInid
                               ,T.QOH_CONFIRM_DATE=SYSDATE	
@@ -83,9 +99,9 @@ module.exports.UpdatedData = async function (req, res) {
                   `;
     const params = {
       strLogInid: strLogInid,
-      strLotNo: strLotNo
-    }
-    const result = await Conn.execute(query,params,{autoCommit:true});
+      strLotNo: strLotNo,
+    };
+    const result = await Conn.execute(query, params, { autoCommit: true });
     if (result.rowsAffected > 0) {
       res.status(200).json({ message: "Updated Success" });
     } else {
@@ -94,8 +110,8 @@ module.exports.UpdatedData = async function (req, res) {
   } catch (error) {
     writeLogError(error.message, query);
     res.status(500).json({ message: error.message });
-  }  
-}
+  }
+};
 module.exports.GetpopUpdata = async function (req, res) {
   var query = "";
   const { strLotNo } = req.query;
@@ -110,7 +126,14 @@ module.exports.GetpopUpdata = async function (req, res) {
             WHERE D.QOD_LOT='${strLotNo}' `;
     const result = await Conn.execute(query);
     if (result.rows.length > 0) {
-      res.status(200).json(result.rows[0]);
+      const jsonRespone = result.rows.map((item) => ({
+        product: item[0],
+        lot: item[1],
+        date: item[2],
+        serial: item[3],
+        grade: item[4],
+      }));
+      res.status(200).json(jsonRespone);
     } else {
       res.status(404).json({ message: "Not Found Data" });
     }
@@ -118,4 +141,4 @@ module.exports.GetpopUpdata = async function (req, res) {
     writeLogError(error.message, query);
     res.status(500).json({ message: error.message });
   }
-}
+};
