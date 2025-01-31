@@ -17,7 +17,8 @@ module.exports.GetAlldtData = async function (req, res) {
                             ,TO_CHAR(B.F_DATE2,'DD/MM/YYYY') AS F_DATE										
                             ,REPLACE(TRIM(TO_CHAR(B.F_GOOD2)),'0','-') AS F_GOOD										
                             ,REPLACE(TRIM(TO_CHAR(B.F_NG2)),'0','-') AS F_NG										
-                            ,CASE WHEN B.F_NG2 >0 THEN 'FAIL' ELSE 'PASS' END AS F_JUDGEMENT										
+                            ,CASE WHEN B.F_NG2 >0 THEN 'FAIL' ELSE 'PASS' END AS F_JUDGEMENT	
+                            ,'' AS F_REMARK									
                         FROM										
                         (										
                         SELECT L.LOT_PRD_NAME AS F_PRODUCT										
@@ -75,6 +76,7 @@ module.exports.GetAlldtData = async function (req, res) {
         good: item[11],
         ng: item[12],
         judgement: item[13],
+        remark: item[14],
       }));
       res.status(200).json(jsonRespone);
     } else {
