@@ -122,6 +122,7 @@ ORDER BY A.EMP_CODE `;
                EMP_CODE: row[0],
                EMP_ENG_NAME: row[1],
                EMP_THA_NAME: row[2],
+               USER_QAD_LOGIN: row[10],
                EMP_JOIN_DATE: row[3],
                EMP_TERM_DATE: row[4],
                EMP_LEVEL: row[5],
@@ -129,7 +130,6 @@ ORDER BY A.EMP_CODE `;
                EMP_COST_CENTER_NAME: row[7],
                EMP_TYPE: row[8],
                EMP_FACTORY: row[9],
-               USER_QAD_LOGIN: row[10],
                USER_QAD_NAME: row[11],
                USER_QAD_REMARK: row[12]
           }));
