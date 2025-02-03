@@ -40,6 +40,14 @@ module.exports.Search = async function (req, res) {
     res.status(500).json({ message: error.message });
   }
 };
+async function readBlobData(blobData) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    blobData.on("data", (chunk) => chunks.push(chunk));
+    blobData.on("end", () => resolve(Buffer.concat(chunks)));
+    blobData.on("error", (err) => reject(err));
+  });
+}
 
 module.exports.FileFormat = async function (req, res) {
   var query = "";
