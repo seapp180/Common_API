@@ -47,3 +47,4 @@ app.use("/api/Oqc_barcode", Oqc_barcode);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+  
