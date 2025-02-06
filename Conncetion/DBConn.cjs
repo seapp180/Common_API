@@ -63,6 +63,14 @@ const ConnectOracleDB = async (ConnType) => {
         };
         const connection = await oracledb.getConnection(PCTTTEST);
         return connection;
+    } else if (ConnType === 'INV'){
+        const PCTTTEST = {
+            user: process.env.INV_USER,
+            password: process.env.INV_PASSWORD,
+            connectString : process.env.INV_CONNECTION_STRING,
+        };
+        const connection = await oracledb.getConnection(PCTTTEST);
+        return connection;
     }
 };
 

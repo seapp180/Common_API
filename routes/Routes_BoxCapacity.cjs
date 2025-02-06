@@ -26,11 +26,15 @@ router.post("/DeleteBoxMaintain", Model_BoxCapacity.DeleteBoxMaintain);
 router.post("/DataMapping", Model_BoxCapacity.DataMapping);
 router.post("/InsBoxCapacity1", Model_BoxCapacity.InsBoxCapacity1);
 router.post("/DataRemainQTY_AUTO", Model_BoxCapacity.DataRemainQTY_AUTO);
-
-
-
-
-
+router.post("/DataLOT_AUTO", Model_BoxCapacity.DataLOT_AUTO);
+router.post("/DataMAX_DATE_AUTO", Model_BoxCapacity.DataMAX_DATE_AUTO);
+router.post("/DataMAX_SEQ_AUTO", Model_BoxCapacity.DataMAX_SEQ_AUTO);   
+router.post("/GetDataGOOD_QTY_FOR_AUTO", Model_BoxCapacity.GetDataGOOD_QTY_FOR_AUTO);
+router.post("/INS_UP_AUTO_PACK1", Model_BoxCapacity.INS_UP_AUTO_PACK1);
+router.post("/INS_UP_AUTO_PACK2", Model_BoxCapacity.INS_UP_AUTO_PACK2);
+router.post("/UpdateAutoSts", Model_BoxCapacity.UpdateAutoSts);
+router.post("/DataPPL_QTY", Model_BoxCapacity.DataPPL_QTY);
+router.post("/DataLotPackingAuto_Gen", Model_BoxCapacity.DataLotPackingAuto_Gen);
 
 
 
