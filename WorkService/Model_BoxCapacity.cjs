@@ -924,10 +924,9 @@ module.exports.DeleteBoxMaintain = async function (req, res) {
     Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     query = `
-    UPDATE FPC_BOX_CAP_MSTR
-    SET BCM_STATUS = 'CLOSE'
-    WHERE BCM_PRD_ITEM_CODE = :item_id 
-    AND BCM_BOX_NO = :box_no
+     DELETE FROM FPC_BOX_CAP_MSTR 
+     WHERE BCM_PRD_ITEM_CODE = :item_id 
+     AND BCM_BOX_NO = :box_no 
       `;
 
     const params = {
