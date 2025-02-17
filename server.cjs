@@ -31,6 +31,7 @@ const BoxCapacity = require("./routes/Routes_BoxCapacity.cjs");
 const zPO_Report = require("./routes/Routes_zPO_Report.cjs");
 const zPO_Summary = require("./routes/Routes_zPO_Summary.cjs")
 const Oqc_barcode = require("./routes/Routes_Oqc_barcode.cjs");
+const Export_Supplier_Customer = require("./routes/Routes_Export_Supplier_Customer.cjs");
 // ---------------------------------------- ------------------
 app.use("/api/RDESMasterUpload", RDESMasterUpload);
 app.use("/api/Common", Common);
@@ -43,6 +44,7 @@ app.use("/api/BoxCapacity", BoxCapacity);
 app.use("/api/zPO_Report", zPO_Report);
 app.use("/api/zPO_Summary", zPO_Summary);
 app.use("/api/Oqc_barcode", Oqc_barcode);
+app.use("/api/Export_Supplier_Customer", Export_Supplier_Customer);
 // ----------------------------------------------------------
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
