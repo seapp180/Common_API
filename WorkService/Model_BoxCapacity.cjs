@@ -877,7 +877,7 @@ module.exports.UpdateSeqLotPacking = async function (req, res) {
     };
 
    const result2= await Conn.execute(updateQuery, updateParams, { autoCommit: true });
-    console.log(result2, "Updated Seq");
+
 
     res.status(200).json({ message: "Update successful" });
     DisconnectOracleDB(Conn);
