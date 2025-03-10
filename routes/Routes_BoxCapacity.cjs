@@ -36,6 +36,8 @@ router.post("/UpdateAutoSts", Model_BoxCapacity.UpdateAutoSts);
 router.post("/DataPPL_QTY", Model_BoxCapacity.DataPPL_QTY);
 router.post("/DataLotPackingAuto_Gen", Model_BoxCapacity.DataLotPackingAuto_Gen);
 router.post("/DATA_USER", Model_BoxCapacity.DATA_USER);
+router.post("/updateReject", Model_BoxCapacity.updateReject);
+
 // router.get("/TEST",Model_BoxCapacity.TEST)
 
 
