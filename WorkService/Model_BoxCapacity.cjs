@@ -103,7 +103,7 @@ module.exports.InsBoxCapacity = async function (req, res) {
   try {
     Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
-    const query = `
+     query = `
      MERGE INTO FPC_BOX_CAP_MSTR T
 USING (
   SELECT 
@@ -121,10 +121,10 @@ USING (
     TO_DATE(:packdate, 'YYYY-MM-DD') AS BCM_DATE
   FROM DUAL
 ) S
-ON (T.BCM_BOX_NO = S.BCM_BOX_NO) 
+ON (T.BCM_PRD_ITEM_CODE = S.BCM_PRD_ITEM_CODE 
+AND T.BCM_BOX_NO = S.BCM_BOX_NO) 
 WHEN MATCHED THEN
   UPDATE SET
-    T.BCM_PRD_ITEM_CODE = S.BCM_PRD_ITEM_CODE,
     T.BCM_STATUS = S.BCM_STATUS,
     T.BCM_QTY = S.BCM_QTY,
     T.BCM_MAX_QTY = S.BCM_MAX_QTY,
@@ -192,7 +192,7 @@ module.exports.InsBoxCapacity1 = async function (req, res) {
     Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
 
-    const query = `
+     query = `
      INSERT INTO FPC_BOX_CAP_MSTR  (
     BCM_PRD_ITEM_CODE,
     BCM_BOX_NO,
@@ -251,7 +251,7 @@ module.exports.InsLotPacking = async function (req, res) {
     Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
 
-    const query = `
+     query = `
       INSERT INTO FPC_BOX_CAP_DET (
         BCD_PRD_ITEM_CODE,
         BCD_BOX_NO,
@@ -505,7 +505,7 @@ module.exports.UpdateBoxQty = async function (req, res) {
   try {
     Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
-    const query = `
+     query = `
       UPDATE FPC_BOX_CAP_MSTR 
       SET BCM_QTY = :box_qty
       WHERE ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE =  :DDLItemProduct) AND  	
@@ -862,16 +862,17 @@ module.exports.UpdateSeqLotPacking = async function (req, res) {
     Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
     const updateQuery = `
-     MERGE INTO FPC_BOX_CAP_DET q
+      MERGE INTO FPC_BOX_CAP_DET q
       USING (
-          SELECT ROWID AS row_id, ROW_NUMBER() OVER (ORDER BY BCD_SEQ_NO) AS new_seq
+          SELECT BCD_BOX_NO, BCD_PRD_ITEM_CODE, ROW_NUMBER() OVER (ORDER BY BCD_SEQ_NO) AS new_seq
           FROM FPC_BOX_CAP_DET
-          WHERE  BCD_BOX_NO = :box_no
+          WHERE BCD_BOX_NO = :box_no
             AND BCD_PRD_ITEM_CODE = :item_id
       ) t
-      ON (q.ROWID = t.row_id)
+      ON (q.BCD_BOX_NO = t.BCD_BOX_NO AND q.BCD_PRD_ITEM_CODE = t.BCD_PRD_ITEM_CODE)
       WHEN MATCHED THEN
       UPDATE SET q.BCD_SEQ_NO = t.new_seq
+
     `;
 
     const updateParams = {
@@ -900,7 +901,7 @@ module.exports.UpdateBoxMaster = async function (req, res) {
     Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
 
-    const query = `
+    query = `
     UPDATE FPC_BOX_CAP_MSTR
     SET BCM_QTY = BCM_QTY - :boxqty
     WHERE BCM_PRD_ITEM_CODE = :item_id 
@@ -954,7 +955,7 @@ module.exports.updateReject = async function (req, res) {
     Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
 
-    const query = `
+     query = `
     UPDATE FPC_REJECT_HEADER
          SET REJH_PACKED = ''
          WHERE REJH_LOTNO = :Lot
