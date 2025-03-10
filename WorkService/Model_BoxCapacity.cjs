@@ -1392,7 +1392,7 @@ module.exports.DATA_USER = async function (req, res) {
     const { dataList } = req.body;
     const Conn = await ConnectOracleDB("CUSR"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
- SELECT ENAME ||'  '||ESURNAME FROM cu_user_humantrix  WHERE EMPCODE ='${dataList.empcode}'
+ SELECT ENAME ||'  '||ESURNAME FROM cu_user_humantrix  WHERE UPPER(EMPCODE) =UPPER('${dataList.empcode}')
       `;
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
