@@ -11,6 +11,7 @@ router.get("/getCheckDuplicatedata", Oqc_barcode.GetCheckDuplicatedata);
 router.get("/getCheckUserStatus", Oqc_barcode.GetcheckUserStatus);
 router.get("/getCheckSameQtywithLot", Oqc_barcode.GetcheckSameQtywithLot);
 router.post("/InsertOqcoutputData", Oqc_barcode.InsertOqcoutputData);
+router.post("/InsertQrcodeTest", Oqc_barcode.InsertQrcodeTest);
 
 //Confirm
 router.get("/getAlldtDataConfirm", Oqc_barcode_confirm.GetAlldtData);
@@ -20,6 +21,8 @@ router.post("/UpdatedDataConfirm", Oqc_barcode_confirm.UpdatedData);
 // report
 router.get("/getAlldtDataReport", Oqc_barcode_report.GetAlldtDataReport);
 router.get("/getpopUpdataReport", Oqc_barcode_report.GetpopUpdataReport);
+
+
 
 
 

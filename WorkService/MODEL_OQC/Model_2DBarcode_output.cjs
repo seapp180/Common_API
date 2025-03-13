@@ -297,4 +297,31 @@ module.exports.InsertOqcoutputData = async function (req, res) {
   }
 };
 
+module.exports.InsertQrcodeTest = async function (req, res) {
+  let query = "";
+  const { strEmpcode , strName , strContent } = req.body;
+  try {
+    const Conn = await ConnectOracleDB("FPC");
+    query += `
+               insert into FPC.TEMP_TABLE_SOMDET
+               (FIELD1,FIELD2,FIELD3) 
+               VALUES
+               (:strEmpcode,:strName,:strContent)
+               `;
+    const binds = {
+      strEmpcode: strEmpcode,
+      strName: strName,
+      strContent: strContent,
+    };
+    const result = await Conn.execute(query,binds,{autoCommit:true});
+    if(result.rowsAffected>0){
+      res.status(200).json({message:"success"});
+    }
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
