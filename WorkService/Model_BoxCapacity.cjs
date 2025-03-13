@@ -1411,6 +1411,33 @@ module.exports.DATA_USER = async function (req, res) {
     console.error(error.message, "DATA_USER");
   }
 };
+module.exports.UpdateDateLot = async function (req, res) {
+  let Conn;
+  let query;
+  try {
+    Conn = await ConnectOracleDB("PCTT");
+    const { dataList } = req.body;
+     query = `
+      UPDATE FPC_BOX_CAP_DET 
+SET BCD_PACK_DATE = TO_DATE(:pack_date, 'YYYY-MM-DD') 
+  WHERE (  BCD_PRD_ITEM_CODE=  :DDLItemProduct) AND  	
+( BCD_BOX_NO = :txtBoxNo)
+      `;
+
+    const params = {
+      DDLItemProduct: dataList.item,
+      txtBoxNo: dataList.boxno,
+      pack_date :dataList.packdate
+    };
+    const result = await Conn.execute(query, params, { autoCommit: true });
+    res.status(200).json(result.rows);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+    console.error(error.message,"UpdateDateLot");
+  }
+};
 // module.exports.TEST = async function (req, res) {
 //   var query = "";
 //   try {
