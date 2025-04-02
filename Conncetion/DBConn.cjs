@@ -20,6 +20,20 @@ const ConnectPG_DB = async () => {
 
   return client;
 };
+const ConnectPG_DB_fetlmes = async () => {
+  const Pg_FETL_A1_Service_fetlmes = {
+    user: process.env.FETLSQLA1_USER_fetlmes,
+    host: process.env.FETLSQLA1_HOST_fetlmes,
+    database: process.env.FETLSQLA1_DATABASE_fetlmes,
+    password: process.env.FETLSQLA1_PASSWORD_fetlmes,
+    port: process.env.FETLSQLA1_PORT_fetlmes,
+  };
+  const client = new Client(Pg_FETL_A1_Service_fetlmes);
+  await client.connect();
+  await client.query("SET timezone = 'Asia/Bangkok'");
+
+  return client;
+};
 
 const DisconnectPG_DB = async (client) => {
   await client.end();
@@ -103,4 +117,5 @@ module.exports = {
   DisconnectPG_DB,
   ConnectOracleDB,
   DisconnectOracleDB,
+  ConnectPG_DB_fetlmes
 };
