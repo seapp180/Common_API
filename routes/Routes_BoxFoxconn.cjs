@@ -31,6 +31,11 @@ router.post("/UpdateBoxDet", Model_BoxFoxconn.UpdateBoxDet);
 router.post("/UpdateSeqDet", Model_BoxFoxconn.UpdateSeqDet);
 router.post("/DeleteBoxMaster", Model_BoxFoxconn.DeleteBoxMaster);
 router.post("/DeleteBoxALL_DET", Model_BoxFoxconn.DeleteBoxALL_DET);
+router.get("/GetLink", Model_BoxFoxconn.GetLink);
+router.post("/GetShipTo", Model_BoxFoxconn.GetShipTo);
+router.post("/GetShipTo_2", Model_BoxFoxconn.GetShipTo_2);
+router.post("/GetLinkWH", Model_BoxFoxconn.GetLinkWH);
+
 
 
 module.exports = router;
