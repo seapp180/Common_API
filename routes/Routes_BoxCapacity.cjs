@@ -32,6 +32,7 @@ router.post("/DataMAX_SEQ_AUTO", Model_BoxCapacity.DataMAX_SEQ_AUTO);
 router.post("/GetDataGOOD_QTY_FOR_AUTO", Model_BoxCapacity.GetDataGOOD_QTY_FOR_AUTO);
 router.post("/INS_UP_AUTO_PACK1", Model_BoxCapacity.INS_UP_AUTO_PACK1);
 router.post("/INS_UP_AUTO_PACK2", Model_BoxCapacity.INS_UP_AUTO_PACK2);
+// router.post("/BULK_EXECUTE", Model_BoxCapacity.BULK_EXECUTE);
 // router.post("/UpdateAutoSts", Model_BoxCapacity.UpdateAutoSts);
 router.post("/DataPPL_QTY", Model_BoxCapacity.DataPPL_QTY);
 router.post("/DataLotPackingAuto_Gen", Model_BoxCapacity.DataLotPackingAuto_Gen);
@@ -40,6 +41,12 @@ router.post("/updateReject", Model_BoxCapacity.updateReject);
 router.post("/UpdateDateLot", Model_BoxCapacity.UpdateDateLot);
 router.post("/DataStatus", Model_BoxCapacity.DataStatus);
 router.post("/UpdataStatus", Model_BoxCapacity.UpdataStatus);
+router.get("/GenAutoBox", Model_BoxCapacity.GenAutoBox);
+router.post("/INS_UP_AUTO_PACKAUTO", Model_BoxCapacity.INS_UP_AUTO_PACKAUTO);
+router.post("/UpdateManual2", Model_BoxCapacity.UpdateManual2);
+router.post("/ADD_LOT", Model_BoxCapacity.ADD_LOT);
+
+
 
 
 

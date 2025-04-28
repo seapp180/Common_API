@@ -8,7 +8,7 @@ const { writeLogError } = require("../Common/LogFuction.cjs");
 module.exports.DDLShipFactory = async function (req, res) {
   var query = "";
   try {
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
       SELECT T.FACTORY_CODE, T.FACTORY_DESC 
       FROM FPC.FPC_FACTORY T 
@@ -31,7 +31,7 @@ module.exports.DDLItemProduct = async function (req, res) {
   var query = "";
   try {
     const { product } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     // SELECT P.PRD_NAME FROM FPC_PRODUCT P WHERE P.PRD_ITEM_CODE = '${product}'
     query += `
       SELECT T.PRD_ITEM_CODE AS ITEM , T.PRD_NAME AS PRD_NAME FROM FPC_PRODUCT T																																											
@@ -54,7 +54,7 @@ module.exports.SearchBoxCapacity = async function (req, res) {
 
   const { datalist } = req.body;
   try {
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
     SELECT DISTINCT F.FACTORY_DESC AS FAC,
          T.BCM_PRD_ITEM_CODE || '/' ||P.PRD_NAME AS ITEM,
@@ -99,9 +99,9 @@ module.exports.InsBoxCapacity = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
-     query = `
+    query = `
      MERGE INTO FPC_BOX_CAP_MSTR T
 USING (
   SELECT 
@@ -183,58 +183,122 @@ WHEN NOT MATCHED THEN
     console.error(error.message);
   }
 };
+// module.exports.InsBoxCapacity1 = async function (req, res) {
+//   let Conn;
+//   let query;
+//   try {
+//     Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
+//     const { dataList } = req.body;
+// console.log(dataList,"dataList");
+//      query = `
+//      INSERT INTO FPC_BOX_CAP_MSTR  (
+//     BCM_PRD_ITEM_CODE,
+//     BCM_BOX_NO,
+//     BCM_FACTORY_CODE,
+//     BCM_STATUS,
+//     BCM_QTY,
+//     BCM_MAX_QTY,
+//     BCM_SHEET_QTY,
+//     BCM_PACKING_BY,
+//     BCM_MODIFY_DATE,
+//     BCM_REMARK,
+//     BCM_SUPPORT_BY,
+//     BCM_DATE
+//   )
+//   VALUES (
+//     :Item,
+//     :box_No,
+//     :FAC_1,
+//     :box_status,
+//     :box_qty,
+//     :box_max_qty,
+//     :sheet_qty,
+//     :packingBy,
+//     SYSDATE,
+//     :remark,
+//     :FAC_2,
+//     TO_DATE(:packdate, 'YYYY-MM-DD')
+//   )`;
+
+//     const params = {
+//       Item: dataList.Item,
+//       box_No: dataList.box_No,
+//       FAC_1: dataList.fac1,
+//       box_status: dataList.box_status,
+//       box_qty: dataList.box_qty,
+//       box_max_qty: dataList.box_max_qty,
+//       sheet_qty: dataList.sheet_qty,
+//       packingBy: dataList.packingBy,
+//       remark: dataList.remark,
+//       FAC_2: dataList.fac2,
+//       packdate: dataList.packdate,
+//     };
+//     const result = await Conn.execute(query, params, { autoCommit: true });
+//     res.status(200).json(result.rows);
+//     DisconnectOracleDB(Conn);
+//   } catch (error) {
+//     writeLogError(error.message, query);
+//     res.status(500).json({ message: error.message });
+//     console.error(error.message);
+//   }
+// };
+
 module.exports.InsBoxCapacity1 = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
-    const { dataList } = req.body;
+    Conn = await ConnectOracleDB("PCTT"); // เชื่อมต่อ DB
 
-     query = `
-     INSERT INTO FPC_BOX_CAP_MSTR  (
-    BCM_PRD_ITEM_CODE,
-    BCM_BOX_NO,
-    BCM_FACTORY_CODE,
-    BCM_STATUS,
-    BCM_QTY,
-    BCM_MAX_QTY,
-    BCM_SHEET_QTY,
-    BCM_PACKING_BY,
-    BCM_MODIFY_DATE,
-    BCM_REMARK,
-    BCM_SUPPORT_BY,
-    BCM_DATE
-  )
-  VALUES (
-    :Item,
-    :box_No,
-    :FAC_1,
-    :box_status,
-    :box_qty,
-    :box_max_qty,
-    :sheet_qty,
-    :packingBy,
-    SYSDATE,
-    :remark,
-    :FAC_2,
-    TO_DATE(:packdate, 'YYYY-MM-DD')
-  )`;
+    const { dataList } = req.body; // ต้องเป็น array ของ object
 
-    const params = {
-      Item: dataList.Item,
-      box_No: dataList.box_No,
-      FAC_1: dataList.fac1,
-      box_status: dataList.box_status,
-      box_qty: dataList.box_qty,
-      box_max_qty: dataList.box_max_qty,
-      sheet_qty: dataList.sheet_qty,
-      packingBy: dataList.packingBy,
-      remark: dataList.remark,
-      FAC_2: dataList.fac2,
-      packdate: dataList.packdate,
-    };
-    const result = await Conn.execute(query, params, { autoCommit: true });
-    res.status(200).json(result.rows);
+    query = `
+      INSERT INTO FPC_BOX_CAP_MSTR  (
+        BCM_PRD_ITEM_CODE,
+        BCM_BOX_NO,
+        BCM_FACTORY_CODE,
+        BCM_STATUS,
+        BCM_QTY,
+        BCM_MAX_QTY,
+        BCM_SHEET_QTY,
+        BCM_PACKING_BY,
+        BCM_MODIFY_DATE,
+        BCM_REMARK,
+        BCM_SUPPORT_BY,
+        BCM_DATE
+      )
+      VALUES (
+        :Item,
+        :box_No,
+        :FAC_1,
+        :box_status,
+        :box_qty,
+        :box_max_qty,
+        :sheet_qty,
+        :packingBy,
+        SYSDATE,
+        :remark,
+        :FAC_2,
+        TO_DATE(:packdate, 'YYYY-MM-DD')
+      )`;
+
+    const bindParams = dataList.map((item) => ({
+      Item: item.Item,
+      box_No: item.box_No,
+      FAC_1: item.fac1,
+      box_status: item.box_status,
+      box_qty: item.box_qty,
+      box_max_qty: item.box_max_qty,
+      sheet_qty: item.sheet_qty,
+      packingBy: item.packingBy,
+      remark: item.remark,
+      FAC_2: item.fac2,
+      packdate: item.packdate,
+    }));
+
+    const result = await Conn.executeMany(query, bindParams, {
+      autoCommit: true,
+    });
+    res.status(200).json(result);
     DisconnectOracleDB(Conn);
   } catch (error) {
     writeLogError(error.message, query);
@@ -242,13 +306,14 @@ module.exports.InsBoxCapacity1 = async function (req, res) {
     console.error(error.message);
   }
 };
+
 module.exports.InsLotPacking = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
-     query = `
+    query = `
       INSERT INTO FPC_BOX_CAP_DET (
         BCD_PRD_ITEM_CODE,
         BCD_BOX_NO,
@@ -289,7 +354,7 @@ module.exports.ShipFAC = async function (req, res) {
   var query = "";
   try {
     const { product } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
      SELECT PR.FACTORY_CODE AS PLANT,
 FC.FACTORY_DESC 
@@ -332,7 +397,7 @@ module.exports.DataBoxno = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
     SELECT '${dataList.fac}' || TO_CHAR(SYSDATE,'YYMM') || '/' ||	
         TRIM(TO_CHAR(TO_NUMBER(NVL(MAX(SUBSTR(B.BCM_BOX_NO,7,5)),'0'))+1,'00000')) AS BOX_NO	
@@ -400,7 +465,7 @@ module.exports.LotNo = async function (req, res) {
 
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
     SELECT R.LOT_NO	
        , R.PRD_TYPE	
@@ -481,7 +546,7 @@ module.exports.DataSeq = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
     SELECT NVL(MAX(FPC_BOX_CAP_DET.BCD_SEQ_NO),0)+1 AS MAX_SEQ	
   FROM FPC_BOX_CAP_DET  	
@@ -500,9 +565,9 @@ module.exports.UpdateBoxQty = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
-     query = `
+    query = `
       UPDATE FPC_BOX_CAP_MSTR 
       SET BCM_QTY = :box_qty
       WHERE ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE =  :DDLItemProduct) AND  	
@@ -527,7 +592,7 @@ module.exports.DataHeader = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
    SELECT BCM_PRD_ITEM_CODE AS ITEM_CODE,
 BCM_BOX_NO AS BOX_NO,
@@ -564,7 +629,7 @@ module.exports.UpdateManual = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
     // QUERY 1
     const query1 = `
@@ -581,44 +646,44 @@ module.exports.UpdateManual = async function (req, res) {
     };
     const result = await Conn.execute(query1, params1, { autoCommit: true });
 
-  //   // QUERY 2
-  //   const query2 = `
-  //    SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') lot_status	
-  //     FROM FPC_BOX_CAP_LOT_STATUS L	
-  //  , FPC_BOX_CAP_DET D	
-  //     WHERE D.BCD_PRD_ITEM_CODE = L.BCS_PRD_ITEM_CODE (+)	
-  //     AND D.BCD_LOT = L.BCS_LOT_NO (+)	
-  //     AND D.BCD_PRD_ITEM_CODE = :product 
-  //     AND D.BCD_BOX_NO = :box_no
-  //     `;
-  //   const params2 = {
-  //     product: dataList.item,
-  //     box_no: dataList.boxno,
-  //   };
-  //   const result2 = await Conn.execute(query2, params2, { autoCommit: true });
-  //   // QUERY 3
-  //   let resultquery2 = "" || result2.rows[0][0]; //LOT_STATUS
-  //   let result3 = "";
-  //   if (resultquery2 != "") {
-  //     const query3 = `
-  //    UPDATE FPC_BOX_CAP_MSTR  	
-  //     SET BCM_STATUS = :lot_status	
-  //     WHERE   ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE = :DDLItemProduct) AND  
-  //   ( FPC_BOX_CAP_MSTR.BCM_BOX_NO = :txtBoxNo)
-  //      `;
-  //     const params3 = {
-  //       DDLItemProduct: dataList.item,
-  //       txtBoxNo: dataList.boxno,
-  //       lot_status: resultquery2,
-  //     };
-  //     result3 = await Conn.execute(query3, params3, { autoCommit: true });
-  //   }
-  //   res.status(200).json({
-  //     result1: result.rows,
-  //     result2: result2.rows,
-  //     result3: result3.rows,
-  //   });
-  res.status(200).json(result.rows);
+    //   // QUERY 2
+    //   const query2 = `
+    //    SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') lot_status
+    //     FROM FPC_BOX_CAP_LOT_STATUS L
+    //  , FPC_BOX_CAP_DET D
+    //     WHERE D.BCD_PRD_ITEM_CODE = L.BCS_PRD_ITEM_CODE (+)
+    //     AND D.BCD_LOT = L.BCS_LOT_NO (+)
+    //     AND D.BCD_PRD_ITEM_CODE = :product
+    //     AND D.BCD_BOX_NO = :box_no
+    //     `;
+    //   const params2 = {
+    //     product: dataList.item,
+    //     box_no: dataList.boxno,
+    //   };
+    //   const result2 = await Conn.execute(query2, params2, { autoCommit: true });
+    //   // QUERY 3
+    //   let resultquery2 = "" || result2.rows[0][0]; //LOT_STATUS
+    //   let result3 = "";
+    //   if (resultquery2 != "") {
+    //     const query3 = `
+    //    UPDATE FPC_BOX_CAP_MSTR
+    //     SET BCM_STATUS = :lot_status
+    //     WHERE   ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE = :DDLItemProduct) AND
+    //   ( FPC_BOX_CAP_MSTR.BCM_BOX_NO = :txtBoxNo)
+    //      `;
+    //     const params3 = {
+    //       DDLItemProduct: dataList.item,
+    //       txtBoxNo: dataList.boxno,
+    //       lot_status: resultquery2,
+    //     };
+    //     result3 = await Conn.execute(query3, params3, { autoCommit: true });
+    //   }
+    //   res.status(200).json({
+    //     result1: result.rows,
+    //     result2: result2.rows,
+    //     result3: result3.rows,
+    //   });
+    res.status(200).json(result.rows);
     DisconnectOracleDB(Conn);
   } catch (error) {
     writeLogError(error.message, query);
@@ -626,12 +691,11 @@ module.exports.UpdateManual = async function (req, res) {
     console.error(error.message);
   }
 };
-
 module.exports.DataStatus = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
       SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') AS lot_status	
       FROM FPC_BOX_CAP_LOT_STATUS L	
@@ -641,7 +705,7 @@ module.exports.DataStatus = async function (req, res) {
       AND D.BCD_PRD_ITEM_CODE = '${dataList.product}' 
       AND D.BCD_BOX_NO = '${dataList.boxno}'
       `;
-      const result = await Conn.execute(query);
+    const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
       STATUS: row[0],
     }));
@@ -656,9 +720,9 @@ module.exports.UpdataStatus = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
-     query = `
+    query = `
       UPDATE FPC_BOX_CAP_MSTR
       SET BCM_STATUS = :lot_status
       WHERE BCM_PRD_ITEM_CODE = :DDLItemProduct
@@ -671,7 +735,9 @@ module.exports.UpdataStatus = async function (req, res) {
     };
     const result3 = await Conn.execute(query, params3, { autoCommit: true });
 
-    res.status(200).json({ message: "Status updated successfully", result: result3.rows });
+    res
+      .status(200)
+      .json({ message: "Status updated successfully", result: result3.rows });
     DisconnectOracleDB(Conn);
   } catch (error) {
     writeLogError(error.message, query);
@@ -679,15 +745,11 @@ module.exports.UpdataStatus = async function (req, res) {
     console.error(error.message);
   }
 };
-
-
-
-
 module.exports.DataLotPacking = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
   SELECT BCD_SEQ_NO AS SEQ ,
     BCD_LOT AS LOT_NO,
@@ -718,7 +780,7 @@ module.exports.DataReceive = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
   SELECT FPC_REJECT_HEADER.REJH_LOTNO AS LOT_NO,                                                              
          ( FPC_REJECT_HEADER.REJH_PRD_TYPE) AS PRD_TYPE,                                                            
@@ -776,7 +838,7 @@ module.exports.GetDataBoxMainTain = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
       SELECT BCM_PRD_ITEM_CODE AS ITEM,
         P.PRD_NAME AS PRODUCT,
@@ -821,7 +883,7 @@ module.exports.GetDataBoxMainTain = async function (req, res) {
 //   let Conn;
 //   let query;
 //   try {
-//     Conn = await ConnectOracleDB("PCTTTEST");
+//     Conn = await ConnectOracleDB("PCTT");
 //     const { dataList } = req.body;
 //     const query = `
 //     DELETE FROM FPC_BOX_CAP_DET
@@ -850,7 +912,7 @@ module.exports.GetDataBoxMainTain = async function (req, res) {
 //   let Conn;
 //   let query;
 //   try {
-//     Conn = await ConnectOracleDB("PCTTTEST");
+//     Conn = await ConnectOracleDB("PCTT");
 //     const { dataList } = req.body;
 //     // ตรวจสอบลำดับปัจจุบันก่อนทำการอัปเดต
 //     console.log(dataList,"DeleteLotPacking");
@@ -883,7 +945,7 @@ module.exports.GetDataBoxMainTain = async function (req, res) {
 module.exports.DeleteLotPacking = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
 
     // ลบข้อมูลที่มี SeqNo ปัจจุบันก่อน
@@ -914,7 +976,7 @@ module.exports.DeleteLotPacking = async function (req, res) {
 module.exports.UpdateSeqLotPacking = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
     const updateQuery = `
      UPDATE FPC_BOX_CAP_DET q
@@ -952,13 +1014,12 @@ WHERE BCD_BOX_NO = :box_no
     console.error(error.message, "UpdateSeqLotPacking");
   }
 };
-
 // ---------------------------
 module.exports.UpdateBoxMaster = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
 
     query = `
@@ -986,7 +1047,7 @@ module.exports.DeleteBoxMaintain = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
     query = `
      DELETE FROM FPC_BOX_CAP_MSTR 
@@ -1012,10 +1073,10 @@ module.exports.updateReject = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
 
-     query = `
+    query = `
     UPDATE FPC_REJECT_HEADER
          SET REJH_PACKED = ''
          WHERE REJH_LOTNO = :Lot
@@ -1037,7 +1098,7 @@ module.exports.DataMapping = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
  SELECT * FROM FPC_BOX_CAP_POST  WHERE BCP_PRD_ITEM_CODE ='${dataList.product}' AND BCP_BOX_NO ='${dataList.boxno}'
       `;
@@ -1054,7 +1115,7 @@ module.exports.DataRemainQTY_AUTO = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
     SELECT NVL(D.BCM_MAX_QTY,0) - NVL(D.BCM_QTY,0) REMAIN_QTY  ,
      D.BCM_BOX_NO AS OLD_LOT
@@ -1081,7 +1142,7 @@ module.exports.DataLOT_AUTO = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
 
     query += `
        SELECT FPC_BOX_CAP_DET.BCD_LOT LOT  
@@ -1108,7 +1169,7 @@ module.exports.DataMAX_DATE_AUTO = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
 
     query += `
        SELECT FPC_REJECT_HEADER.REJH_DATE MAX_DATE
@@ -1133,7 +1194,7 @@ module.exports.DataMAX_SEQ_AUTO = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
 
     query += `
          SELECT NVL(MAX(FPC_BOX_CAP_DET.BCD_SEQ_NO),0)+1 AS MAX_SEQ
@@ -1156,7 +1217,7 @@ module.exports.GetDataGOOD_QTY_FOR_AUTO = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
 
     query += `
      SELECT R.LOT_NO
@@ -1230,11 +1291,13 @@ module.exports.GetDataGOOD_QTY_FOR_AUTO = async function (req, res) {
     res.status(500).json({ message: error.message });
   }
 };
+
+/////
 module.exports.INS_UP_AUTO_PACK1 = async function (req, res) {
   let Conn;
   let query1, query2;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
 
     query1 = `
@@ -1274,11 +1337,13 @@ module.exports.INS_UP_AUTO_PACK1 = async function (req, res) {
     console.error(error.message, "INS_UP_AUTO_PACK1");
   }
 };
+
+// /////
 module.exports.INS_UP_AUTO_PACK2 = async function (req, res) {
   let Conn;
   let query1, query2, query3;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     const { dataList } = req.body;
 
     query1 = `
@@ -1349,23 +1414,219 @@ module.exports.INS_UP_AUTO_PACK2 = async function (req, res) {
     console.error(error.message, "INS_UP_AUTO_PACK2");
   }
 };
+
+///////
+// module.exports.BULK_EXECUTE = async function (req, res) {
+//   let Conn;
+//   try {
+//     Conn = await ConnectOracleDB("PCTT");
+//     const { bulkList } = req.body;
+
+//     for (const data of bulkList) {
+//       const { action, item, boxno, maxseq, lot_no, remain_qty, qty_pack, packdate, status } = data;
+
+//       if (action === "PACK1") {
+//         await Conn.execute(
+//           `INSERT INTO FPC_BOX_CAP_DET (BCD_PRD_ITEM_CODE, BCD_BOX_NO, BCD_SEQ_NO, BCD_LOT, BCD_LOT_QTY, BCD_PACK_DATE)
+//            VALUES (:PRD, :BOX, :SEQ, :LOT, :REMAIN_QTY, TO_DATE(:PACK_DATE, 'YYYY-MM-DD'))`,
+//           { PRD: item, BOX: boxno, SEQ: maxseq, LOT: lot_no, REMAIN_QTY: remain_qty, PACK_DATE: packdate },
+//           { autoCommit: false }
+//         );
+//         await Conn.execute(
+//           `UPDATE FPC_BOX_CAP_MSTR SET BCM_QTY = BCM_QTY + :REMAIN_QTY WHERE BCM_PRD_ITEM_CODE = :PRD AND BCM_BOX_NO = :BOX`,
+//           { PRD: item, BOX: boxno, REMAIN_QTY: remain_qty },
+//           { autoCommit: false }
+//         );
+//       } else if (action === "PACK2") {
+//         await Conn.execute(
+//           `INSERT INTO FPC_BOX_CAP_DET (BCD_PRD_ITEM_CODE, BCD_BOX_NO, BCD_SEQ_NO, BCD_LOT, BCD_LOT_QTY, BCD_PACK_DATE)
+//            VALUES (:PRD, :BOX, :SEQ, :LOT, :QTY, TO_DATE(:PACK_DATE, 'YYYY-MM-DD'))`,
+//           { PRD: item, BOX: boxno, SEQ: maxseq, LOT: lot_no, QTY: qty_pack, PACK_DATE: packdate },
+//           { autoCommit: false }
+//         );
+//         await Conn.execute(
+//           `UPDATE FPC_BOX_CAP_MSTR SET BCM_QTY = BCM_QTY + :QTY WHERE BCM_PRD_ITEM_CODE = :PRD AND BCM_BOX_NO = :BOX`,
+//           { PRD: item, BOX: boxno, QTY: qty_pack },
+//           { autoCommit: false }
+//         );
+//         await Conn.execute(
+//           `UPDATE FPC_REJECT_HEADER
+//            SET REJH_PACKED = 'Y'
+//            WHERE REJH_LOTNO = :LOT AND REJH_PRD_TYPE = (
+//              SELECT PRD_TYPE FROM FPC_PRODUCT WHERE PRD_ITEM_CODE = :PRD
+//            )`,
+//           { LOT: lot_no, PRD: item },
+//           { autoCommit: false }
+//         );
+//       } else if (action === "UPDATE_STATUS") {
+//         await Conn.execute(
+//           `UPDATE FPC_BOX_CAP_MSTR SET BCM_STATUS = :STATUS WHERE BCM_PRD_ITEM_CODE = :PRD AND BCM_BOX_NO = :BOX`,
+//           { PRD: item, BOX: boxno, STATUS: status },
+//           { autoCommit: false }
+//         );
+//       }
+//     }
+
+//     await Conn.commit();
+//     res.status(200).json({ message: "Bulk Execute Success" });
+//     DisconnectOracleDB(Conn);
+//   } catch (error) {
+//     await Conn?.rollback();
+//     writeLogError(error.message, 'BULK_EXECUTE');
+//     res.status(500).json({ message: error.message });
+//     console.error(error.message, "BULK_EXECUTE Error");
+//   }
+// };
+
+module.exports.GenAutoBox = async function (req, res) {
+  const { product, fullQtyperbox1, boxquantity, BoxNo } = req.query;
+
+  let query = "";
+  try {
+    query = `
+    SELECT R.LOT_NO
+       , R.PRD_TYPE
+       , R.GOOD_QTY  
+FROM (  
+          SELECT FPC_REJECT_HEADER.REJH_LOTNO AS LOT_NO,                                            
+                 FPC_REJECT_HEADER.REJH_PRD_TYPE AS PRD_TYPE,                                        
+                 ( FPC_REJECT_HEADER.REJH_TOTALPCS -                                            
+                   ( FPC_REJECT_HEADER.REJH_QTY_SCRAP +                                            
+                     FPC_REJECT_HEADER.REJH_QTY ) ) -                                        
+                   NVL((SELECT SUM(FPC_BOX_CAP_DET.BCD_LOT_QTY)                                            
+                       FROM  FPC_BOX_CAP_DET                                            
+                     WHERE ( FPC_BOX_CAP_DET.BCD_LOT = FPC_REJECT_HEADER.REJH_LOTNO ) AND                                    
+                           ( FPC_BOX_CAP_DET.BCD_PRD_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE ) ) ,0 ) AS GOOD_QTY,    
+                  FPC_REJECT_HEADER.REJH_LAST_MODIFY AS LAST_MODIFY                              
+            FROM FPC_REJECT_HEADER,
+                 (                                            
+                  SELECT P.PRD_ITEM_CODE  
+                         , P.PRD_NAME
+                         , P.PRD_TYPE
+                  FROM FPC_PRODUCT P  
+                  WHERE P.PRD_ITEM_CODE =  '${product}'
+                 ) FPC_PRODUCT,                                            
+                 FPC_LOT                                            
+           WHERE ( FPC_REJECT_HEADER.REJH_LOTNO = FPC_LOT.LOT ) AND                                          
+                 ( FPC_REJECT_HEADER.REJH_PRD_NAME = FPC_PRODUCT.PRD_NAME ) AND                                              
+                 ( FPC_REJECT_HEADER.REJH_PRD_TYPE = FPC_PRODUCT.PRD_TYPE ) AND                                          
+                 ( FPC_LOT.LOT_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE )  AND                                          
+                 ( FPC_LOT.LOT_SCAN_FINISH = 'Y' ) AND                                          
+                 ( ( FPC_REJECT_HEADER.REJH_PACKED is null ) OR                                          
+                   ( FPC_REJECT_HEADER.REJH_PACKED = '' ) )
+        UNION
+        SELECT T.LOT_NO,  
+               T.PRD_TYPE,                            
+               T.LOT_QTY - NVL((SELECT SUM(FPC_BOX_CAP_DET.BCD_LOT_QTY)                                            
+                                FROM  FPC_BOX_CAP_DET                                          
+                                WHERE ( FPC_BOX_CAP_DET.BCD_LOT = T.LOT_NO) AND                                    
+                                      ( FPC_BOX_CAP_DET.BCD_PRD_ITEM_CODE = T.PRD_ITEM_CODE ) ) ,0 )AS GOOD_QTY ,  
+               T.LAST_MODIFY  
+        FROM (  
+                SELECT P.LPT_LOT AS LOT_NO,  
+                       FPC_PRODUCT.PRD_ITEM_CODE,                                          
+                       FPC_PRODUCT.PRD_TYPE AS PRD_TYPE,                                          
+                       SUM(P.LPT_REQUEST_QTY) AS LOT_QTY,  
+                       MAX(P.LPT_REQUEST_DATE) AS LAST_MODIFY                              
+                  FROM FPC_LOT_PARTIAL_QTY P,                                            
+                       FPC_PRODUCT,                                            
+                       FPC_LOT                                            
+                 WHERE ( FPC_LOT.LOT = P.LPT_LOT ) AND  
+                       ( FPC_LOT.LOT_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE ) AND                                                      
+                       ( FPC_LOT.LOT_SCAN_FINISH = 'N' ) AND                                                                                    
+                       ( FPC_PRODUCT.PRD_ITEM_CODE = '${product}')    
+                GROUP BY P.LPT_LOT,                                            
+                       FPC_PRODUCT.PRD_TYPE ,
+                       FPC_PRODUCT.PRD_ITEM_CODE    
+                ) T    
+     ) R  
+WHERE R.GOOD_QTY > 0    
+ORDER BY R.LAST_MODIFY ASC,                                      
+         R.LOT_NO ASC    
+      `;
+    const Conn = await ConnectOracleDB("PCTT");
+    const result = await Conn.execute(query);
+    const jsonData = result.rows.map((row) => ({
+      value: row[0],
+      label: row[0],
+      GOOD_QTY: row[2],
+      PRD_TYPE: row[1],
+      LOT_NO: row[0],
+    }));
+    const boxQuantity = boxquantity;
+    const fullQtyperbox = fullQtyperbox1;
+
+    const lots = jsonData.map((item) => ({
+      ...item,
+      remaining: item.GOOD_QTY,
+    }));
+    let strBoxno = BoxNo.split(",");
+    const boxes = [];
+
+    for (let i = 0; i < boxQuantity; i++) {
+      let remainingQty = fullQtyperbox;
+      const lotsUsedInBox = [];
+
+      for (const lot of lots) {
+        if (remainingQty <= 0) break;
+
+        const usedQty = Math.min(lot.remaining, remainingQty);
+        if (usedQty > 0) {
+          lotsUsedInBox.push({
+            LOT_NO: lot.LOT_NO,
+            USED_QTY: usedQty,
+            BEFORE_USED: lot.remaining,
+            AFTER_USED: lot.remaining - usedQty,
+          });
+          lot.remaining -= usedQty;
+          remainingQty -= usedQty;
+        }
+      }
+
+      boxes.push({
+        boxNumber: strBoxno[i],
+        totalFilled: fullQtyperbox - remainingQty,
+        remainingToFill: remainingQty,
+        lotsUsed: lotsUsedInBox,
+      });
+    }
+
+    const finalLotStatus = lots.map((lot) => ({
+      LOT_NO: lot.LOT_NO,
+      PRD_TYPE: lot.PRD_TYPE,
+      ORIGINAL_QTY: lot.GOOD_QTY,
+      GOOD_QTY: lot.remaining,
+    }));
+
+    res.status(200).json({
+      boxQuantity,
+      fullQtyperbox,
+      boxes,
+      Alllot: finalLotStatus,
+    });
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // module.exports.UpdateAutoSts = async function (req, res) {
 //   let Conn;
 //   let query;
-  
+
 //   try {
-//     Conn = await ConnectOracleDB("PCTTTEST");
+//     Conn = await ConnectOracleDB("PCTT");
 //     const { dataList } = req.body;
 //     console.log(dataList,"UpdateAutoSts");
 //     // QUERY 1
 //     const query1 = `
-//     SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') lot_status	
-//     FROM FPC_BOX_CAP_LOT_STATUS L	
-//       , FPC_BOX_CAP_DET D	
-//     WHERE D.BCD_PRD_ITEM_CODE = L.BCS_PRD_ITEM_CODE (+)	
-//         AND D.BCD_LOT = L.BCS_LOT_NO (+)	
-//         AND D.BCD_PRD_ITEM_CODE = :DDLItemProduct 
-//         AND D.BCD_BOX_NO = :txtBoxNo  
+//     SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') lot_status
+//     FROM FPC_BOX_CAP_LOT_STATUS L
+//       , FPC_BOX_CAP_DET D
+//     WHERE D.BCD_PRD_ITEM_CODE = L.BCS_PRD_ITEM_CODE (+)
+//         AND D.BCD_LOT = L.BCS_LOT_NO (+)
+//         AND D.BCD_PRD_ITEM_CODE = :DDLItemProduct
+//         AND D.BCD_BOX_NO = :txtBoxNo
 
 //       `;
 //     const params1 = {
@@ -1379,9 +1640,9 @@ module.exports.INS_UP_AUTO_PACK2 = async function (req, res) {
 //     let result2 = "";
 //     if (resultquery1 != "") {
 //       const query2 = `
-//      UPDATE FPC_BOX_CAP_MSTR  	
-//       SET BCM_STATUS = :lot_status	
-//       WHERE   ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE = :DDLItemProduct) AND  
+//      UPDATE FPC_BOX_CAP_MSTR
+//       SET BCM_STATUS = :lot_status
+//       WHERE   ( FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE = :DDLItemProduct) AND
 //     ( FPC_BOX_CAP_MSTR.BCM_BOX_NO = :txtBoxNo)
 //        `;
 //       const params2 = {
@@ -1406,9 +1667,10 @@ module.exports.DataLotPackingAuto_Gen = async function (req, res) {
   let query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
     // Convert the array to a comma-separated string
     const boxnoList = dataList.boxno.map((box) => `'${box}'`).join(",");
+
     if (boxnoList) {
       query = `
     SELECT BCM_BOX_NO AS BOX_NO,
@@ -1452,7 +1714,7 @@ module.exports.DATA_USER = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("CUSR"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+    const Conn = await ConnectOracleDB("CUSR"); //มาเปลี่ยนเป็น PCTT ด้วย
     query += `
  SELECT ENAME ||'  '||ESURNAME FROM cu_user_humantrix  WHERE UPPER(EMPCODE) =UPPER('${dataList.empcode}')
       `;
@@ -1472,9 +1734,9 @@ module.exports.UpdateDateLot = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList } = req.body;
-     query = `
+    query = `
       UPDATE FPC_BOX_CAP_DET 
 SET BCD_PACK_DATE = TO_DATE(:pack_date, 'YYYY-MM-DD') 
   WHERE (  BCD_PRD_ITEM_CODE=  :DDLItemProduct) AND  	
@@ -1484,7 +1746,7 @@ SET BCD_PACK_DATE = TO_DATE(:pack_date, 'YYYY-MM-DD')
     const params = {
       DDLItemProduct: dataList.item,
       txtBoxNo: dataList.boxno,
-      pack_date :dataList.packdate
+      pack_date: dataList.packdate,
     };
     const result = await Conn.execute(query, params, { autoCommit: true });
     res.status(200).json(result.rows);
@@ -1492,20 +1754,20 @@ SET BCD_PACK_DATE = TO_DATE(:pack_date, 'YYYY-MM-DD')
   } catch (error) {
     writeLogError(error.message, query);
     res.status(500).json({ message: error.message });
-    console.error(error.message,"UpdateDateLot");
+    console.error(error.message, "UpdateDateLot");
   }
 };
 // module.exports.TEST = async function (req, res) {
 //   var query = "";
 //   try {
-//     const Conn = await ConnectOracleDB("PCTTTEST"); //มาเปลี่ยนเป็น PCTTTEST ด้วย
+//     const Conn = await ConnectOracleDB("PCTT"); //มาเปลี่ยนเป็น PCTT ด้วย
 //     query += `
 // SELECT SYSDATE FROM DUAL
 //       `;
 //     const result = await Conn.execute(query);
 
 //     res.status(200).json({'result.rows':result.rows,Conn});
-//     console.log(result.rows,"CONNECT PCTTTEST");
+//     console.log(result.rows,"CONNECT PCTT");
 //     DisconnectOracleDB(Conn);
 //   } catch (error) {
 //     writeLogError(error.message, query);
@@ -1513,3 +1775,339 @@ SET BCD_PACK_DATE = TO_DATE(:pack_date, 'YYYY-MM-DD')
 //     console.error(error.message, "DATA_USER");
 //   }
 // };
+
+module.exports.UpdateManual2 = async function (req, res) {
+  let Conn;
+  let query;
+
+  try {
+    Conn = await ConnectOracleDB("PCTT");
+
+    const { dataList } = req.body;
+
+    query = `
+      UPDATE FPC_REJECT_HEADER  
+      SET REJH_PACKED = 'Y'  
+      WHERE REJH_LOTNO = :lot_no
+        AND REJH_PRD_TYPE = (
+          SELECT PRD_TYPE
+          FROM FPC_PRODUCT
+          WHERE PRD_ITEM_CODE = :product
+        )
+    `;
+
+    const params = {
+      product: dataList.item,
+      lot_no: dataList.lot,
+    };
+
+    const result = await Conn.execute(query, params, { autoCommit: true });
+
+    res.status(200).json(result);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+    console.error(error.message);
+  }
+};
+
+module.exports.INS_UP_AUTO_PACKAUTO = async function (req, res) {
+  let Conn;
+  let query1, query2;
+
+  try {
+    Conn = await ConnectOracleDB("PCTT");
+    const { dataList } = req.body;
+
+    // ✅ ตรวจสอบว่าข้อมูลที่ส่งมาตรง format
+    if (
+      !dataList ||
+      typeof dataList.item !== "string" ||
+      typeof dataList.boxno !== "string" ||
+      !Array.isArray(dataList.lots) ||
+      dataList.lots.length === 0
+    ) {
+      return res.status(400).json({ message: "Invalid or missing data." });
+    }
+
+    const lotData = dataList.lots;
+
+
+    // INSERT INTO FPC_BOX_CAP_DET
+    query1 = `
+      INSERT INTO FPC_BOX_CAP_DET  
+      (BCD_PRD_ITEM_CODE, BCD_BOX_NO, BCD_SEQ_NO, BCD_LOT, BCD_LOT_QTY, BCD_PACK_DATE)  
+      VALUES (:PRD, :BOX, :Seq, :LOT, :REMAIN_QTY, TO_DATE(:PACK_DATE, 'YYYY-MM-DD'))
+    `;
+
+    const bindParams1 = lotData.map((lot, index) => ({
+      PRD: dataList.item,
+      BOX: dataList.boxno,
+      Seq: lot.seq || index + 1, // หากไม่ได้ส่ง seq มาก็ใช้ index แทน
+      LOT: lot.lot_no,
+      REMAIN_QTY: lot.remain_qty,
+      PACK_DATE: lot.packdate,
+    }));
+
+    await Conn.executeMany(query1, bindParams1, { autoCommit: false });
+
+    // UPDATE FPC_BOX_CAP_MSTR
+    const totalQty = lotData.reduce(
+      (sum, lot) => sum + Number(lot.remain_qty || 0),
+      0
+    );
+
+    query2 = `
+      UPDATE FPC_BOX_CAP_MSTR  
+      SET BCM_QTY = BCM_QTY + :REMAIN_QTY  
+      WHERE BCM_PRD_ITEM_CODE = :PRD AND BCM_BOX_NO = :BOX
+    `;
+
+    const params2 = {
+      PRD: dataList.item,
+      BOX: dataList.boxno,
+      REMAIN_QTY: totalQty,
+    };
+
+    await Conn.execute(query2, params2, { autoCommit: false });
+
+    await Conn.commit();
+
+    res.status(200).json({ message: "Success" });
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    if (Conn) {
+      await Conn.rollback();
+    }
+    writeLogError(error.message, query1 || query2);
+    res.status(500).json({ message: error.message });
+    console.error(error.message, "INS_UP_AUTO_PACK");
+  }
+};
+module.exports.GenAutoBox = async function (req, res) {
+  const { product, fullQtyperbox1, boxquantity, BoxNo } = req.query;
+
+  let query = "";
+  try {
+    query = `
+    SELECT R.LOT_NO
+       , R.PRD_TYPE
+       , R.GOOD_QTY  
+FROM (  
+          SELECT FPC_REJECT_HEADER.REJH_LOTNO AS LOT_NO,                                            
+                 FPC_REJECT_HEADER.REJH_PRD_TYPE AS PRD_TYPE,                                        
+                 ( FPC_REJECT_HEADER.REJH_TOTALPCS -                                            
+                   ( FPC_REJECT_HEADER.REJH_QTY_SCRAP +                                            
+                     FPC_REJECT_HEADER.REJH_QTY ) ) -                                        
+                   NVL((SELECT SUM(FPC_BOX_CAP_DET.BCD_LOT_QTY)                                            
+                       FROM  FPC_BOX_CAP_DET                                            
+                     WHERE ( FPC_BOX_CAP_DET.BCD_LOT = FPC_REJECT_HEADER.REJH_LOTNO ) AND                                    
+                           ( FPC_BOX_CAP_DET.BCD_PRD_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE ) ) ,0 ) AS GOOD_QTY,    
+                  FPC_REJECT_HEADER.REJH_LAST_MODIFY AS LAST_MODIFY                              
+            FROM FPC_REJECT_HEADER,
+                 (                                            
+                  SELECT P.PRD_ITEM_CODE  
+                         , P.PRD_NAME
+                         , P.PRD_TYPE
+                  FROM FPC_PRODUCT P  
+                  WHERE P.PRD_ITEM_CODE =  '${product}'
+                 ) FPC_PRODUCT,                                            
+                 FPC_LOT                                            
+           WHERE ( FPC_REJECT_HEADER.REJH_LOTNO = FPC_LOT.LOT ) AND                                          
+                 ( FPC_REJECT_HEADER.REJH_PRD_NAME = FPC_PRODUCT.PRD_NAME ) AND                                              
+                 ( FPC_REJECT_HEADER.REJH_PRD_TYPE = FPC_PRODUCT.PRD_TYPE ) AND                                          
+                 ( FPC_LOT.LOT_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE )  AND                                          
+                 ( FPC_LOT.LOT_SCAN_FINISH = 'Y' ) AND                                          
+                 ( ( FPC_REJECT_HEADER.REJH_PACKED is null ) OR                                          
+                   ( FPC_REJECT_HEADER.REJH_PACKED = '' ) )
+        UNION
+        SELECT T.LOT_NO,  
+               T.PRD_TYPE,                            
+               T.LOT_QTY - NVL((SELECT SUM(FPC_BOX_CAP_DET.BCD_LOT_QTY)                                            
+                                FROM  FPC_BOX_CAP_DET                                          
+                                WHERE ( FPC_BOX_CAP_DET.BCD_LOT = T.LOT_NO) AND                                    
+                                      ( FPC_BOX_CAP_DET.BCD_PRD_ITEM_CODE = T.PRD_ITEM_CODE ) ) ,0 )AS GOOD_QTY ,  
+               T.LAST_MODIFY  
+        FROM (  
+                SELECT P.LPT_LOT AS LOT_NO,  
+                       FPC_PRODUCT.PRD_ITEM_CODE,                                          
+                       FPC_PRODUCT.PRD_TYPE AS PRD_TYPE,                                          
+                       SUM(P.LPT_REQUEST_QTY) AS LOT_QTY,  
+                       MAX(P.LPT_REQUEST_DATE) AS LAST_MODIFY                              
+                  FROM FPC_LOT_PARTIAL_QTY P,                                            
+                       FPC_PRODUCT,                                            
+                       FPC_LOT                                            
+                 WHERE ( FPC_LOT.LOT = P.LPT_LOT ) AND  
+                       ( FPC_LOT.LOT_ITEM_CODE = FPC_PRODUCT.PRD_ITEM_CODE ) AND                                                      
+                       ( FPC_LOT.LOT_SCAN_FINISH = 'N' ) AND                                                                                    
+                       ( FPC_PRODUCT.PRD_ITEM_CODE = '${product}')    
+                GROUP BY P.LPT_LOT,                                            
+                       FPC_PRODUCT.PRD_TYPE ,
+                       FPC_PRODUCT.PRD_ITEM_CODE    
+                ) T    
+     ) R  
+WHERE R.GOOD_QTY > 0    
+ORDER BY R.LAST_MODIFY ASC,                                      
+         R.LOT_NO ASC    
+      `;
+    const Conn = await ConnectOracleDB("PCTT");
+    const result = await Conn.execute(query);
+    const jsonData = result.rows.map((row) => ({
+      value: row[0],
+      label: row[0],
+      GOOD_QTY: row[2],
+      PRD_TYPE: row[1],
+      LOT_NO: row[0],
+    }));
+    const boxQuantity = boxquantity;
+    const fullQtyperbox = fullQtyperbox1;
+
+    const lots = jsonData.map((item) => ({
+      ...item,
+      remaining: item.GOOD_QTY,
+    }));
+    let strBoxno = BoxNo.split(",");
+    const boxes = [];
+
+    for (let i = 0; i < boxQuantity; i++) {
+      let remainingQty = fullQtyperbox;
+      const lotsUsedInBox = [];
+
+      for (const lot of lots) {
+        if (remainingQty <= 0) break;
+
+        const usedQty = Math.min(lot.remaining, remainingQty);
+        if (usedQty > 0) {
+          lotsUsedInBox.push({
+            LOT_NO: lot.LOT_NO,
+            USED_QTY: usedQty,
+            BEFORE_USED: lot.remaining,
+            AFTER_USED: lot.remaining - usedQty,
+          });
+          lot.remaining -= usedQty;
+          remainingQty -= usedQty;
+        }
+      }
+
+      boxes.push({
+        boxNumber: strBoxno[i],
+        totalFilled: fullQtyperbox - remainingQty,
+        remainingToFill: remainingQty,
+        lotsUsed: lotsUsedInBox,
+      });
+    }
+
+    const finalLotStatus = lots.map((lot) => ({
+      LOT_NO: lot.LOT_NO,
+      PRD_TYPE: lot.PRD_TYPE,
+      ORIGINAL_QTY: lot.GOOD_QTY,
+      GOOD_QTY: lot.remaining,
+    }));
+
+    res.status(200).json({
+      boxQuantity,
+      fullQtyperbox,
+      boxes,
+      Alllot: finalLotStatus,
+    });
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.ADD_LOT = async function (req, res) {
+  let Conn;
+  let query1, query2, query3, query4, query5;
+  let strError = "";
+  let seq;
+  let result4;
+  let BoxNoarray =[];
+  try {
+    Conn = await ConnectOracleDB("PCTT");
+    const { dataList, product, packdate } = req.body;
+    for (const [index, box] of dataList.entries()) {
+      let boxNo = box.boxNumber;
+      let lotarray = box.lotsUsed;
+      for (const [lotIndex, lot] of lotarray.entries()) {
+        BoxNoarray.push(boxNo);
+         query1 = ` INSERT INTO FPC_BOX_CAP_DET  
+            (BCD_PRD_ITEM_CODE, BCD_BOX_NO, BCD_SEQ_NO, BCD_LOT, BCD_LOT_QTY, BCD_PACK_DATE)  
+            VALUES (:PRD, :BOX, :Seq, :LOT, :REMAIN_QTY, TO_DATE(:PACK_DATE, 'YYYY-MM-DD'))`; 
+        const params1 = {
+          PRD: product,
+          BOX: boxNo,
+          Seq: lotIndex + 1,
+          LOT: lot.LOT_NO,
+          REMAIN_QTY: lot.USED_QTY,
+          PACK_DATE: packdate,
+        };
+
+         query2 = ` UPDATE FPC_BOX_CAP_MSTR  
+         SET BCM_QTY = BCM_QTY + :REMAIN_QTY  
+         WHERE BCM_PRD_ITEM_CODE = :PRD AND BCM_BOX_NO = :BOX`; 
+        const params2 = {
+          PRD: product,
+          BOX: boxNo,
+          REMAIN_QTY: lot.USED_QTY,
+        };
+
+        if (lot.AFTER_USED == 0) {
+          query3 = `
+          UPDATE FPC_REJECT_HEADER
+          SET REJH_PACKED = 'Y'
+          WHERE ( FPC_REJECT_HEADER.REJH_LOTNO = :lot_no) AND
+            ( FPC_REJECT_HEADER.REJH_PRD_TYPE = ( SELECT FPC_PRODUCT.PRD_TYPE
+                                                  FROM  FPC_PRODUCT
+                                                  WHERE FPC_PRODUCT.PRD_ITEM_CODE =  :PRD ))
+          `;
+          const params3 = {
+            PRD: product,
+            lot_no: lot.LOT_NO,
+          };
+          const result3 = await Conn.execute(query3, params3, {autoCommit: true,});
+        }
+        query4 = `
+            SELECT NVL(MAX(L.BCS_STATUS),'ACTIVE') AS lot_status	
+            FROM FPC_BOX_CAP_LOT_STATUS L	,FPC_BOX_CAP_DET D	
+            WHERE D.BCD_PRD_ITEM_CODE = L.BCS_PRD_ITEM_CODE	
+            AND D.BCD_LOT = L.BCS_LOT_NO	
+            AND D.BCD_PRD_ITEM_CODE = '${product}' 
+            AND D.BCD_BOX_NO = '${boxNo}'
+        `;
+
+        result4 = await Conn.execute(query4);
+       
+
+        if (result4.rows[0].length > 0) {
+          query5 = `
+            UPDATE FPC_BOX_CAP_MSTR
+            SET BCM_STATUS = :lot_status
+            WHERE BCM_PRD_ITEM_CODE = :DDLItemProduct
+            AND BCM_BOX_NO = :txtBoxNo`;
+          const params5 = {
+            DDLItemProduct: product,
+            txtBoxNo: boxNo,
+            lot_status: result4.rows[0][0],
+          };
+          const result5 = await Conn.execute(query5, params5, { autoCommit: true,});
+          if (result4.rows[0][0] === "HOLD") {
+            console.log("สถานะเป็น HOLD หยุดการทำงานของ for-loop");
+            break;
+          }
+        }
+        const result = await Conn.execute(query1, params1, {autoCommit: true, });
+        const result2 = await Conn.execute(query2, params2, {autoCommit: true, });
+      }
+
+    }
+
+    await DisconnectOracleDB(Conn);
+
+    res.status(200).json({ message: "Success", Status: result4.rows[0][0] ,BoxNumber : BoxNoarray});
+  } catch (error) {
+    writeLogError(error.message, query1 || query2 || query3);
+    res.status(500).json({ message: error.message });
+    console.error(error.message, "INS_UP_AUTO_PACK");
+  }
+};
