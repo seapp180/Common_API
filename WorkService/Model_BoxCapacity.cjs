@@ -57,7 +57,7 @@ module.exports.SearchBoxCapacity = async function (req, res) {
     const Conn = await ConnectOracleDB("PCTT");
     query += `
     SELECT DISTINCT F.FACTORY_DESC AS FAC,
-         T.BCM_PRD_ITEM_CODE || '/' ||P.PRD_NAME AS ITEM,
+         T.BCM_PRD_ITEM_CODE || ' / ' ||P.PRD_NAME AS ITEM,
         T.BCM_BOX_NO AS BOX_NO
        ,(SELECT RTRIM(XMLAGG(XMLELEMENT(E, UPPER(D.BCD_LOT) || ', ')).EXTRACT('//text()'), ', ')
         FROM FPC_BOX_CAP_DET D

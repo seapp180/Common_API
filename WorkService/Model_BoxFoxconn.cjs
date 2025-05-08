@@ -38,7 +38,7 @@ module.exports.GetFactoryCode = async function (req, res) {
   var query = "";
   try {
     const { fac } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
        SELECT FACTORY_CODE AS FAC_CODE 
        FROM FPC_FACTORY WHERE FACTORY_DESC ='${fac}'
@@ -59,7 +59,7 @@ module.exports.GetProductKey = async function (req, res) {
   var query = "";
   try {
     const { product } = req.query;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
         SELECT T.PRD_ITEM_CODE AS ITEM,
         T.PRD_NAME AS PRD_NAME																																							
@@ -83,7 +83,7 @@ module.exports.GetBoxNo = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
       SELECT '${dataList.fac}' || TO_CHAR(SYSDATE,'YYMM') || '/' ||	
           TRIM(TO_CHAR(TO_NUMBER(NVL(MAX(SUBSTR(B.BCM_BOX_NO,7,5)),'0'))+1,'00000')) AS BOX_NO	
@@ -103,7 +103,7 @@ module.exports.GetBoxNo = async function (req, res) {
 module.exports.GetproductScan = async function (req, res) {
   var query = "";
   try {
-    const client = await ConnectPG_DB_fetlmes();
+    const client = await ConnectPG_DB();
     const { packid } = req.body;
     query += ` SELECT T.MFG AS PRODUCT,
     T.LOT_NO AS LOT,
@@ -139,7 +139,7 @@ module.exports.GetProductName = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
           SELECT PRD_ITEM_CODE AS ITEM FROM FPC_PRODUCT WHERE PRD_NAME ='${dataList.product}'
           `;
@@ -159,7 +159,7 @@ module.exports.GetDataPackLabel = async function (req, res) {
   var query = "";
   try {
     const { pack_label } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
           SELECT BCDD_PACK_ID																																																
 FROM FPC.FPC_BOX_CAP_DET_DETAIL																																																
@@ -178,7 +178,7 @@ module.exports.InsertBoxMSTR = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
 
     query = `
@@ -234,7 +234,7 @@ module.exports.InsertBoxDet = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     query = `
        INSERT INTO FPC_BOX_CAP_DET (
@@ -277,7 +277,7 @@ module.exports.InsertBoxDetail = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
 
     query = `
@@ -321,7 +321,7 @@ module.exports.ddlProduct = async function (req, res) {
   var query = "";
   try {
     const { product } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
       SELECT T.PRD_ITEM_CODE AS ITEM  FROM FPC_PRODUCT T																																											
 WHERE T.PRD_NAME LIKE UPPER('${product}') || '%' OR T.PRD_ITEM_CODE LIKE UPPER('${product}') || '%' ORDER BY  T.PRD_ITEM_CODE  
@@ -342,7 +342,7 @@ module.exports.GetddlProduct = async function (req, res) {
   var query = "";
   try {
     const { product } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     // SELECT P.PRD_NAME FROM FPC_PRODUCT P WHERE P.PRD_ITEM_CODE = '${product}'
     query += `
       SELECT T.PRD_ITEM_CODE AS ITEM,T.PRD_NAME			  FROM FPC_PRODUCT T																																								
@@ -364,7 +364,7 @@ module.exports.SearchBoxFoxConn = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
        SELECT
          DISTINCT
@@ -468,7 +468,7 @@ module.exports.GetEdit_MSTR = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
         SELECT P.PRD_NAME AS PRODUCT,
         M.BCM_BOX_NO AS BOX_NO,
@@ -502,7 +502,7 @@ module.exports.GetEdit_BoxDet = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
         SELECT D.BCD_PRD_ITEM_CODE AS ITEM,
       P.PRD_NAME AS PRODUCT,
@@ -538,7 +538,7 @@ module.exports.GetEdit_BoxDet_Detail = async function (req, res) {
   var query = "";
   try {
     const { dataList } = req.body;
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
       SELECT 
       D.BCDD_PRD_ITEM_CODE  AS ITEM,
@@ -577,7 +577,7 @@ module.exports.Update_BoxMSTR = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     query = `
         UPDATE FPC_BOX_CAP_MSTR 
@@ -612,7 +612,7 @@ module.exports.updateDeleteRejectFoxconn = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
 
     query = `
@@ -637,7 +637,7 @@ module.exports.UpdateAddReject = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const query1 = `
       UPDATE FPC_REJECT_HEADER  
@@ -663,7 +663,7 @@ module.exports.UpdateAddReject = async function (req, res) {
 module.exports.DeleteBoxDet_Foxconn = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const deleteQuery = `
         UPDATE FPC_BOX_CAP_DET
@@ -697,7 +697,7 @@ module.exports.DeleteBoxDet_Foxconn = async function (req, res) {
 module.exports.DeleteBoxDetDetail_Foxconn = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const deleteQuery = `
     DELETE FROM FPC_BOX_CAP_DET_DETAIL
@@ -729,7 +729,7 @@ module.exports.UpdateBoxDetDetail = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     query = `
     MERGE INTO FPC_BOX_CAP_DET_DETAIL T
@@ -796,7 +796,7 @@ module.exports.UpdateBoxDet = async function (req, res) {
   let Conn;
   let query;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     query = `
    MERGE INTO FPC_BOX_CAP_DET T
@@ -857,7 +857,7 @@ module.exports.UpdateBoxDet = async function (req, res) {
 module.exports.UpdateSeqDet = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const updateQuery = `
     UPDATE FPC_BOX_CAP_DET q
@@ -898,7 +898,7 @@ module.exports.UpdateSeqDet = async function (req, res) {
 module.exports.DeleteBoxMaster = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const deleteQuery = `
         DELETE FROM  FPC_BOX_CAP_MSTR 
@@ -922,7 +922,7 @@ module.exports.DeleteBoxMaster = async function (req, res) {
 module.exports.DeleteBoxALL_DET = async function (req, res) {
   let Conn;
   try {
-    Conn = await ConnectOracleDB("PCTT");
+    Conn = await ConnectOracleDB("PCTTTEST");
     const { dataList } = req.body;
     const deleteQuery = `
        DELETE FROM FPC_BOX_CAP_DET 
@@ -940,13 +940,13 @@ module.exports.DeleteBoxALL_DET = async function (req, res) {
   } catch (error) {
     writeLogError(error.message);
     res.status(500).json({ message: error.message });
-    console.error(error.message, "DeleteBoxMaster");
+    console.error(error.message, "DeleteBoxALL_DET");
   }
 };
 module.exports.GetLink = async function (req, res) {
   var query = "";
   try {
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
       SELECT CMM_VALUE_CHR_1 AS LINK
       FROM FPC.FPCC_CONTROL_MASTER_MAINTAIN
@@ -1003,7 +1003,6 @@ module.exports.GetShipTo = async function (req, res) {
       label: row[1],
       value: row[0],
       SHIP_CODE: row[2],
-
     }));
     res.status(200).json(jsonData);
     DisconnectOracleDB(Conn);
@@ -1040,13 +1039,35 @@ module.exports.GetShipTo_2 = async function (req, res) {
 module.exports.GetLinkWH = async function (req, res) {
   var query = "";
   try {
-    const Conn = await ConnectOracleDB("PCTT");
+    const Conn = await ConnectOracleDB("PCTTTEST");
     query += `
      SELECT CMM_VALUE_CHR_1 AS LINK 
 	 FROM FPC.FPCC_CONTROL_MASTER_MAINTAIN
 	 WHERE CMM_TYPE='0043'
 	  AND CMM_KEY_1='01'
 	  AND CMM_KEY_2='WH'
+      `;
+    const result = await Conn.execute(query);
+    const jsonData = result.rows.map((row) => ({
+      LINK: row[0],
+    }));
+    res.status(200).json(jsonData);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.GetLinkLabel = async function (req, res) {
+  var query = "";
+  try {
+    const Conn = await ConnectOracleDB("PCTT");
+    query += `
+    SELECT CMM_VALUE_CHR_1 AS LINK
+    FROM FPC.FPCC_CONTROL_MASTER_MAINTAIN
+    WHERE CMM_TYPE='0043'
+	  AND CMM_KEY_1='01'
+	  AND CMM_KEY_2='SMF1'
       `;
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
