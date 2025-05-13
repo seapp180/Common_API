@@ -19,12 +19,12 @@ module.exports.GetFac = async function (req, res) {
             FROM FPC.FPC_FACTORY
             WHERE FACTORY_STATUS='A'
             UNION
-            SELECT '','-Select-',0 FROM DUAL
+            SELECT '','ALL',0 FROM DUAL
             ORDER BY 3,2
         `;
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
-      value: row[0],
+      value: row[0] || "",
       label: row[1],
       SEQ: row[2],
     }));
@@ -49,12 +49,12 @@ module.exports.GetInv = async function (req, res) {
                 WHERE T.BCP_POST_DATE >= sysdate - 75
                 AND T.BCP_BOX_NO LIKE '${fac}' || '%'
                 UNION
-                SELECT '','-Select-',0 FROM DUAL
+                SELECT '','ALL',0 FROM DUAL
                 ORDER BY 3,2
           `;
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
-      value: row[0],
+      value: row[0] || "",
       label: row[1],
       SEQ: row[2],
     }));
@@ -78,12 +78,12 @@ module.exports.GetProduct = async function (req, res) {
                 AND T.BCP_BOX_NO LIKE '${fac}' || '%'
                 AND T.BCP_INV_NO = '${inv}'
                 UNION
-                SELECT '','-Select-',0 FROM DUAL
+                SELECT '','ALL',0 FROM DUAL
                 ORDER BY 3,2
             `;
     const result = await Conn.execute(query);
     const jsonData = result.rows.map((row) => ({
-      value: row[0],
+      value: row[0] || "",
       label: row[1],
       SEQ: row[2],
     }));
@@ -321,9 +321,10 @@ module.exports.Search = async function (req, res) {
                     INNER JOIN FPC_FACTORY F ON F.FACTORY_CODE=T.BCM_FACTORY_CODE
                     INNER JOIN FPC_BOX_CAP_POST CP ON CP.BCP_PRD_ITEM_CODE=T.BCM_PRD_ITEM_CODE
                     AND CP.BCP_BOX_NO=T.BCM_BOX_NO
-              WHERE (T.BCM_PRD_ITEM_CODE = '${prd}' OR '${prd}' IS NULL)
-              AND (CP.BCP_INV_NO >= UPPER('${invfrom}') OR '${invfrom}' IS NULL)
-              AND (CP.BCP_INV_NO <= UPPER('${invto}') OR '${invto}' IS NULL)
+              WHERE 1=1
+             -- (T.BCM_PRD_ITEM_CODE = '${prd}' OR '${prd}' IS NULL)
+              AND (CP.BCP_INV_NO = UPPER('${invfrom}') OR '${invfrom}' IS NULL)
+             -- AND (CP.BCP_INV_NO <= UPPER('${invto}') OR '${invto}' IS NULL)
               AND (CP.BCP_POST_DATE >= sysdate - 75)
               AND (TO_CHAR(CP.BCP_POST_DATE,'YYYY-MM-DD') >= '${datefrom}' OR '${datefrom}' IS NULL)
               ORDER BY 2,4 ASC
