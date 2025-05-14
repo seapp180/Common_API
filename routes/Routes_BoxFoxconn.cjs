@@ -36,6 +36,7 @@ router.post("/GetShipTo", Model_BoxFoxconn.GetShipTo);
 router.post("/GetShipTo_2", Model_BoxFoxconn.GetShipTo_2);
 router.post("/GetLinkWH", Model_BoxFoxconn.GetLinkWH);
 router.post("/GetLinkLabel", Model_BoxFoxconn.GetLinkLabel);
+router.post("/GetScanShelf", Model_BoxFoxconn.GetScanShelf);
 
 
 

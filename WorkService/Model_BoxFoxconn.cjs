@@ -1080,3 +1080,25 @@ module.exports.GetLinkLabel = async function (req, res) {
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.GetScanShelf = async function (req, res) {
+  var query = "";
+  try {
+    const { LotNo} = req.body;
+    const Conn = await ConnectOracleDB("PCTT");
+    query += `
+      SELECT COUNT(T.LOT) AS F_SHELF
+      FROM FPC_LOT_SHELF T INNER JOIN FPC_PROCESS P ON P.PROC_ID = T.PROC_ID
+      WHERE T.LOT='${LotNo}'
+	    AND UPPER(P.PROC_DISP) LIKE '%W/H%'
+      `;
+    const result = await Conn.execute(query);
+    const jsonData = result.rows.map((row) => ({
+      F_SHELF: row[0],
+    }));
+    res.status(200).json(jsonData);
+    DisconnectOracleDB(Conn);
+  } catch (error) {
+    writeLogError(error.message, query);
+    res.status(500).json({ message: error.message });
+  }
+};
