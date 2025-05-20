@@ -15,6 +15,9 @@ router.post("/DataSelectBoxeEdit",Model_BoxInvoice.DataSelectBoxeEdit)
 router.post("/UpdataStatusEdit_NotCheck",Model_BoxInvoice.UpdataStatusEdit_NotCheck)
 router.post("/UpdataStatusEdit_Check",Model_BoxInvoice.UpdataStatusEdit_Check)
 router.post("/GetDataTest",Model_BoxInvoice.GetDataTest)
+router.post("/GetProduct_write",Model_BoxInvoice.GetProduct_write)
+
+
 
 
 module.exports = router;
