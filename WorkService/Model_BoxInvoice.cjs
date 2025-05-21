@@ -7,7 +7,7 @@ const { writeLogError } = require("../Common/LogFuction.cjs");
 module.exports.GetFac = async function (req, res) {
   var query = "";
   try {
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
             SELECT FACTORY_CODE AS FAC_ID,
              FACTORY_DESC AS FAC_DESC ,
@@ -36,7 +36,7 @@ module.exports.GetInv = async function (req, res) {
   var query = "";
   try {
     const { fac } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
                 SELECT DISTINCT T.BCP_INV_NO AS F_VALUE
                 ,T.BCP_INV_NO AS F_TEXT,
@@ -66,7 +66,7 @@ module.exports.GetInv = async function (req, res) {
 //   var query = "";
 //   try {
 //     const { fac, inv } = req.body;
-//     const Conn = await ConnectOracleDB("PCTTTEST");
+//     const Conn = await ConnectOracleDB("PCTT");
 //     query += `
 //                 SELECT DISTINCT T.BCP_PRD_ITEM_CODE AS F_VALUE,T.BCP_PRD_ITEM_CODE AS F_TEXT,1
 //                 FROM FPC_BOX_CAP_POST T
@@ -99,7 +99,7 @@ module.exports.GetProduct = async function (req, res) {
     jsonData = "";
   try {
     const { fac, inv } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query1 = `
       SELECT *
       FROM FPC_BOX_CAP_POST T
@@ -154,7 +154,7 @@ module.exports.GetProduct_write = async function (req, res) {
   var query = "";
   try {
     const { fac, prd } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
                SELECT DISTINCT BCM_PRD_ITEM_CODE AS F_VALUE,BCM_PRD_ITEM_CODE AS F_TEXT,1
         FROM FPC.FPC_BOX_CAP_MSTR
@@ -180,7 +180,7 @@ module.exports.GetSeq_Date = async function (req, res) {
   var query = "";
   try {
     const { fac, inv, prd } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
               SELECT DISTINCT T.BCP_INV_SEQ AS BOX_SEQ,
               TO_CHAR(T.BCP_POST_DATE,'YYYY-MM-DD') AS POST_DATE
@@ -208,7 +208,7 @@ module.exports.DataSelectBox = async function (req, res) {
   var query = "";
   try {
     const { invno, prd, seq } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
       SELECT 
           BCM.BCM_PRD_ITEM_CODE AS ITEM,
@@ -252,7 +252,7 @@ module.exports.DataSelectBox = async function (req, res) {
 //   var query = "";
 //   try {
 //     const { invno, prd, seq } = req.body;
-//     const Conn = await ConnectOracleDB("PCTTTEST");
+//     const Conn = await ConnectOracleDB("PCTT");
 //     query += `
 //                 SELECT
 //     BCM_PRD_ITEM_CODE AS ITEM,
@@ -293,7 +293,7 @@ module.exports.DataSelectBoxeEdit = async function (req, res) {
   var query = "";
   try {
     const { invno, prd, seq, boxno } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
       SELECT 
           BCM.BCM_PRD_ITEM_CODE AS ITEM,
@@ -338,7 +338,7 @@ module.exports.Search = async function (req, res) {
   var query = "";
   try {
     const { prd, invfrom, invto, datefrom } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
                SELECT DISTINCT CP.BCP_INV_NO AS INVOICE_NO
               ,TO_CHAR(CP.BCP_POST_DATE,'DD/MM/YYYY') AS INVOICE_DATE
@@ -400,7 +400,7 @@ module.exports.UpdataStatusNew = async function (req, res) {
   let Conn;
   let { query, query2 } = "";
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList, inv_no, inv_date, seq_no } = req.body;
     query = `
         UPDATE FPC_BOX_CAP_MSTR 
@@ -448,7 +448,7 @@ module.exports.UpdataStatusEdit_NotCheck = async function (req, res) {
   let Conn;
   let { query, query2 } = "";
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList, inv_no, seq_no } = req.body;
     query = `
       UPDATE FPC_BOX_CAP_MSTR 
@@ -495,7 +495,7 @@ module.exports.UpdataStatusEdit_Check = async function (req, res) {
   let Conn;
   let { query } = "";
   try {
-    Conn = await ConnectOracleDB("PCTTTEST");
+    Conn = await ConnectOracleDB("PCTT");
     const { dataList, inv_no, seq_no, date_inv } = req.body;
 
     query = `
@@ -533,7 +533,7 @@ module.exports.GetDataTest = async function (req, res) {
   var query = "";
   try {
     const { invno, prd, seq } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
     query += `
         SELECT FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE AS ITEM,   				
          FPC_BOX_CAP_MSTR.BCM_BOX_NO AS BOX_NO,   				
@@ -588,7 +588,7 @@ module.exports.DataBoxDetail = async function (req, res) {
 
   try {
     const { inv } = req.body;
-    const Conn = await ConnectOracleDB("PCTTTEST");
+    const Conn = await ConnectOracleDB("PCTT");
 
     // ใช้ parameter binding ปลอดภัยกว่า
     query1 = `
