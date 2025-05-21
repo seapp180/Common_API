@@ -3,6 +3,9 @@ const app = express();
 const port = 4005;
 const oracledb = require("oracledb");
 const cors = require('cors');
+const path = require("path");
+
+
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -19,7 +22,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+app.use(express.static(path.join(__dirname, 'public')));
 // ----------------------------------------------------------
 const RDESMasterUpload = require("./routes/Routes_RDESMasterUpload.cjs");
 const Common = require("./routes/Routes_Common.cjs")
