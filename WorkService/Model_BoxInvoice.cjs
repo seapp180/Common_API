@@ -608,7 +608,7 @@ module.exports.DataBoxDetail = async function (req, res) {
         ON FPC_BOX_CAP_POST.BCP_PRD_ITEM_CODE = FPC_BOX_CAP_MSTR.BCM_PRD_ITEM_CODE
         AND FPC_BOX_CAP_POST.BCP_BOX_NO = FPC_BOX_CAP_MSTR.BCM_BOX_NO
       WHERE FPC_BOX_CAP_POST.BCP_INV_NO = :inv
-      ORDER BY PRD_ITEM_CODE
+      ORDER BY 1,2,5
     `;
     const result = await Conn.execute(query1, { inv });
     jsonData = result.rows.map((row) => ({

@@ -74,7 +74,8 @@ WHERE (T.BCM_PRD_ITEM_CODE = '${datalist.Product}' OR '${datalist.Product}' IS N
       AND (CD.BCD_LOT <= UPPER('${datalist.LotTo}') OR '${datalist.LotTo}' IS NULL)
       AND (TO_CHAR(T.BCM_DATE,'YYYY-MM-DD') >= '${datalist.PackingDateFrom}' OR '${datalist.PackingDateFrom}' IS NULL)
       AND (TO_CHAR(T.BCM_DATE,'YYYY-MM-DD') <= '${datalist.PackingDateTo}' OR '${datalist.PackingDateTo}' IS NULL)
-      AND (T.BCM_BOX_NO LIKE UPPER('${datalist.BoxNoSeacrh}') || '%')
+      AND (T.BCM_BOX_NO >= UPPER ('${datalist.BoxNoSeacrh}') OR '${datalist.BoxNoSeacrh}' IS NULL)
+      AND (T.BCM_BOX_NO <= UPPER('${datalist.BoxNoSeacrhTo}') OR '${datalist.BoxNoSeacrhTo}' IS NULL)
 ORDER BY 2,3 ASC
       `;
     const result = await Conn.execute(query);
