@@ -116,6 +116,7 @@ FROM
   ORDER BY 1	
 ) A	
 WHERE A.USER_QAD_LOGIN IS NOT NULL	
+ AND A.EMP_CODE <> '1000225'
 ORDER BY A.EMP_CODE `;
           const result = await Conn.execute(query);
           const jsonData = result.rows.map((row) => ({
