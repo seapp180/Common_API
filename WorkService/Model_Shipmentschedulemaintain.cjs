@@ -10,7 +10,6 @@ const { writeLogError } = require("../Common/LogFuction.cjs");
 module.exports.GetURL = async function (req, res) {
     var query = "";
     try {
-        console.log('เข้า')
         const Conn = await ConnectOracleDB("PCTTTEST");
         const { loginID, systemID } = req.body;
         query += `
@@ -192,7 +191,6 @@ module.exports.SaveData2 = async function (req, res) {
     try {
         const Conn = await ConnectOracleDB("PCTTTEST");
         const { secondshipment, loginid, strprdname, strbuild } = req.body;
-        console.log(secondshipment, loginid, strprdname, strbuild)
         query += `
                 UPDATE FPCC_CONTROL_RECORD T
                 SET T.FRC_VALUE_DATE_1 = TO_DATE(:Update_shipment ,'DD/MM/YYYY')	

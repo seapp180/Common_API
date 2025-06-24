@@ -10,7 +10,6 @@ const { writeLogError } = require("../../Common/LogFuction.cjs");
 module.exports.GetAlldtDataReport = async function (req, res) {
   var query = "";
   const { strLotNo, strProduct, strDateFrom, strDateTo } = req.query;
-  console.log(strLotNo, strProduct, strDateFrom, strDateTo);
   try {
     const Conn = await ConnectOracleDB("FPC");
     query += `SELECT B.*																																		

@@ -45,6 +45,8 @@ router.get("/GenAutoBox", Model_BoxCapacity.GenAutoBox);
 router.post("/INS_UP_AUTO_PACKAUTO", Model_BoxCapacity.INS_UP_AUTO_PACKAUTO);
 router.post("/UpdateManual2", Model_BoxCapacity.UpdateManual2);
 router.post("/ADD_LOT", Model_BoxCapacity.ADD_LOT);
+router.post("/CheckLot", Model_BoxCapacity.CheckLot);
+
 
 
 

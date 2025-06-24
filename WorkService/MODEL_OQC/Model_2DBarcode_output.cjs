@@ -50,7 +50,6 @@ module.exports.GetCheckRawData = async function (req, res) {
 
                   `;
     const result = await Conn.execute(query);
-    console.log(result);
     if (result.rows.length > 0) {
       let dtData = [];
       for (let i = 0; i < result.rows.length; i++) {
@@ -119,7 +118,6 @@ module.exports.GetCheckDuplicatedata = async function (req, res) {
                         WHERE T.QOH_LOT='${strLotNo}'                
                     `;
     const result = await Conn.execute(query);
-    console.log(query);
     if (result.rows.length > 0) {
       jsonData = {
         QOH_LOT: result.rows[0][0],
@@ -164,7 +162,6 @@ module.exports.GetcheckUserStatus = async function (req, res) {
                         WHERE T.EMPCODE ='${strUserIdCode}'             
                       `;
     const result = await Conn.execute(query);
-    console.log(result);
     if (result.rows.length > 0) {
       jsonData = {
         emp_code: result.rows[0][0],
@@ -191,7 +188,6 @@ module.exports.GetcheckSameQtywithLot = async function (req, res) {
 
   try {
     const Conn = await ConnectOracleDB("FPC");
-    console.log(strLotNo);
     query += `
                        SELECT COUNT(D.QOD_SERIAL) AS F_QTY                    
                         FROM COND.QA_OQC_2D_DATA D                
@@ -218,7 +214,6 @@ module.exports.GetcheckSameQtywithLot = async function (req, res) {
 module.exports.InsertOqcoutputData = async function (req, res) {
   var query = "";
   const { dataList } = req.body;
-  console.log(dataList);
   try {
     query += `
                 MERGE INTO COND.QA_OQC_2D_HEADER FH	
@@ -288,7 +283,6 @@ module.exports.InsertOqcoutputData = async function (req, res) {
     };
     const Conn = await ConnectOracleDB("FPC");
     const result = await Conn.execute(query, binds, { autoCommit: true });
-    console.log(result);
     DisconnectOracleDB(Conn);
     res.status(200).json({ message: "Success" });
   } catch (err) {
